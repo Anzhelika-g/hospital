@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/department")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -18,24 +19,24 @@ public class DepartmentController {
     }
 
 
-    @RequestMapping(value = "/department/{departmentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
     public Department getDepartment(@PathVariable Long departmentId){
         return departmentService.getDepartmentById(departmentId);
     }
 
-    @RequestMapping(value = "department/{departmentId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{departmentId}", method = RequestMethod.DELETE)
     public String removeDepartment(@PathVariable Long departmentId){
         departmentService.deleteDepartment(departmentId);
         return "Department deleted.";
     }
 
-    @RequestMapping(value = "/department/{departmentId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{departmentId}", method = RequestMethod.PUT)
     public String updateDepartment(@PathVariable Long departmentId, @RequestBody DepartmentDTO department){
         departmentService.updateDepartment(departmentId, department.getName(), department.getDescription());
         return "Department updated";
     }
 
-    @RequestMapping(value = "/department/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String addDepartment(@RequestBody DepartmentDTO departmentDTO){
         Department department = new Department();
         department.setName(departmentDTO.getName());
@@ -44,7 +45,7 @@ public class DepartmentController {
         return "Department added";
     }
 
-    @RequestMapping(value = "/department/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Department> getAllDepartments(){
         return departmentService.getAllDepartments();
     }
