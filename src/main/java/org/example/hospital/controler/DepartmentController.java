@@ -2,6 +2,7 @@ package org.example.hospital.controler;
 
 import org.example.hospital.dto.DepartmentDTO;
 import org.example.hospital.entity.Department;
+import org.example.hospital.entity.Doctor;
 import org.example.hospital.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,22 +32,24 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.PUT)
-    public String updateDepartment(@PathVariable Long departmentId, @RequestBody DepartmentDTO department){
-        departmentService.updateDepartment(departmentId, department.getName(), department.getDescription());
+    public String updateDepartment(@PathVariable Long departmentId, @RequestBody DepartmentDTO departmentDTO){
+        departmentService.updateDepartment(departmentId, departmentDTO);
         return "Department updated";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String addDepartment(@RequestBody DepartmentDTO departmentDTO){
-        Department department = new Department();
-        department.setName(departmentDTO.getName());
-        department.setDescription(departmentDTO.getDescription());
-        departmentService.addDepartment(department);
+        departmentService.addDepartment(departmentDTO);
         return "Department added";
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Department> getAllDepartments(){
         return departmentService.getAllDepartments();
+    }
+
+    @RequestMapping(value = "/{departmentId}/doctor/list", method = RequestMethod.GET)
+    public List<Doctor> getDoctorsByDepartment(@PathVariable Long departmentId){
+        return departmentService.getDepartmentById(departmentId).getDoctors();
     }
 }

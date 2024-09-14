@@ -1,5 +1,6 @@
 package org.example.hospital.service;
 
+import org.example.hospital.dto.DepartmentDTO;
 import org.example.hospital.entity.Department;
 import org.example.hospital.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ public class DepartmentService {
     }
 
     @Transactional
-    public void addDepartment(Department department){
+    public void addDepartment(DepartmentDTO departmentDTO){
+        Department department = new Department();
+        department.setName(departmentDTO.getName());
+        department.setDescription(departmentDTO.getDescription());
         departmentRepository.save(department);
     }
 
@@ -31,13 +35,13 @@ public class DepartmentService {
     }
 
     @Transactional
-    public void updateDepartment(Long id, String name, String description){
-        if (departmentRepository.findById(id).isEmpty()){
-            throw new NoSuchElementException("Department not found with id: " + id);
+    public void updateDepartment(Long departmentId, DepartmentDTO departmentDTO){
+        if (departmentRepository.findById(departmentId).isEmpty()){
+            throw new NoSuchElementException("Department not found with id: " + departmentId);
         }
-        Department department = departmentRepository.findById(id).get();
-        department.setName(name);
-        department.setDescription(description);
+        Department department = departmentRepository.findById(departmentId).get();
+        department.setName(departmentDTO.getName());
+        department.setDescription(departmentDTO.getDescription());
         departmentRepository.save(department);
     }
 
