@@ -71,6 +71,9 @@ public class DepartmentService {
     }
 
     public List<DoctorDTO> getDoctorsByDepartment(Long id){
+        if (departmentRepository.findById(id).isEmpty()){
+            throw new NoSuchElementException("Department not found with id: " + id);
+        }
         List<Doctor> doctors = departmentRepository.findById(id).get().getDoctors();
         List<DoctorDTO> doctorDTOs = new ArrayList<>();
 

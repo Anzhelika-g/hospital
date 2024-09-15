@@ -1,11 +1,14 @@
 package org.example.hospital.controler;
 
 import org.example.hospital.dto.DoctorDTO;
-import org.example.hospital.entity.Doctor;
 import org.example.hospital.request.DoctorUserRequest;
 import org.example.hospital.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 
 @RestController
@@ -19,26 +22,42 @@ public class DoctorController {
     }
 
     @RequestMapping(value = "/{doctorId}", method = RequestMethod.GET)
-    public DoctorDTO getDoctor(@PathVariable Long doctorId){
-        return doctorService.getDoctorById(doctorId);
+    public ResponseEntity<DoctorDTO> getDoctor(@PathVariable Long doctorId){
+        try {
+            DoctorDTO doctorDTO = doctorService.getDoctorById(doctorId);
+            return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/{doctorId}", method = RequestMethod.DELETE)
-    public String removeDepartment(@PathVariable Long doctorId){
-        doctorService.deleteDoctor(doctorId);
-        return "Doctor deleted.";
+    public ResponseEntity<String> removeDepartment(@PathVariable Long doctorId){
+        try {
+            doctorService.deleteDoctor(doctorId);
+            return new ResponseEntity<>("Doctor deleted.", HttpStatus.NO_CONTENT);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/{doctorId}", method = RequestMethod.PUT)
-    public String updateDoctor(@PathVariable Long doctorId, @RequestBody DoctorDTO doctorDTO){
-        doctorService.updateDoctor(doctorId, doctorDTO);
-        return "Doctor updated";
+    public ResponseEntity<String> updateDoctor(@PathVariable Long doctorId, @RequestBody DoctorDTO doctorDTO){
+        try {
+            doctorService.updateDoctor(doctorId, doctorDTO);
+            return new ResponseEntity<>("Doctor updated.", HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addDoctor(@RequestBody DoctorUserRequest doctorUserRequest) {
+    public ResponseEntity<String> addDoctor(@RequestBody DoctorUserRequest doctorUserRequest) {
         doctorService.addDoctor(doctorUserRequest.getDoctorDTO(), doctorUserRequest.getUserDTO());
-        return "Doctor added";
+        return new ResponseEntity<>("Doctor added.", HttpStatus.CREATED);
     }
 }
 
