@@ -10,7 +10,4 @@ public class DoctorDTO {
     private String phoneNumber;
     private String info;
     private Long departmentId;
-//    private String email;
-//    private String password;
-//    private String role;
 }

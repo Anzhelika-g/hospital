@@ -15,7 +15,7 @@ public class Doctor {
     @Column(name = "doctor_id")
     private Long doctorId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",referencedColumnName = "user_id")
     private User user;
 
@@ -33,6 +33,7 @@ public class Doctor {
     private List<Schedule> schedules = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @OneToMany(mappedBy = "doctor")

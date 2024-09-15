@@ -1,6 +1,7 @@
 package org.example.hospital.controler;
 
 import org.example.hospital.dto.DepartmentDTO;
+import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.entity.Department;
 import org.example.hospital.entity.Doctor;
 import org.example.hospital.service.DepartmentService;
@@ -21,7 +22,7 @@ public class DepartmentController {
 
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
-    public Department getDepartment(@PathVariable Long departmentId){
+    public DepartmentDTO getDepartment(@PathVariable Long departmentId){
         return departmentService.getDepartmentById(departmentId);
     }
 
@@ -44,12 +45,12 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<Department> getAllDepartments(){
+    public List<DepartmentDTO> getAllDepartments(){
         return departmentService.getAllDepartments();
     }
 
     @RequestMapping(value = "/{departmentId}/doctor/list", method = RequestMethod.GET)
-    public List<Doctor> getDoctorsByDepartment(@PathVariable Long departmentId){
-        return departmentService.getDepartmentById(departmentId).getDoctors();
+    public List<DoctorDTO> getDoctorsByDepartment(@PathVariable Long departmentId){
+        return departmentService.getDoctorsByDepartment(departmentId);
     }
 }

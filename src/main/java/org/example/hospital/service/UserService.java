@@ -1,5 +1,6 @@
 package org.example.hospital.service;
 
+import org.example.hospital.convertors.UserConverter;
 import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.User;
 import org.example.hospital.repository.UserRepository;
@@ -12,14 +13,17 @@ import java.util.NoSuchElementException;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final UserConverter userConverter;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserConverter userConverter) {
         this.userRepository = userRepository;
+        this.userConverter = userConverter;
     }
 
     @Transactional
-    public void addUser(User user){
+    public void addUser(UserDTO userDTO){
+        User user = userConverter.convertToEntity(userDTO, new User());
         userRepository.save(user);
     }
 
@@ -36,9 +40,7 @@ public class UserService {
             throw new NoSuchElementException("User not found with id: " + id);
         }
         User user = userRepository.findById(id).get();
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
-        user.setRole(user.getRole());
+        user = userConverter.convertToEntity(userDTO, user);
         userRepository.save(user);
     }
 
@@ -48,5 +50,9 @@ public class UserService {
             throw new NoSuchElementException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    public User getUserByEmail(UserDTO userDTO){
+        return userRepository.findByEmail(userDTO.getEmail());
     }
 }

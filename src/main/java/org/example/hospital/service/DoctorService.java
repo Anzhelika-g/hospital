@@ -1,6 +1,8 @@
 package org.example.hospital.service;
 
+import org.example.hospital.convertors.DoctorConverter;
 import org.example.hospital.dto.DoctorDTO;
+import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.Doctor;
 import org.example.hospital.entity.User;
 import org.example.hospital.repository.DepartmentRepository;
@@ -16,57 +18,50 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final DepartmentRepository departmentRepository;
     private final UserService userService;
+    private final DoctorConverter doctorConverter;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository, DepartmentRepository departmentRepository, UserService userService) {
+    public DoctorService(DoctorRepository doctorRepository, DepartmentRepository departmentRepository, UserService userService, DoctorConverter doctorConverter) {
         this.doctorRepository = doctorRepository;
         this.departmentRepository = departmentRepository;
         this.userService = userService;
+        this.doctorConverter = doctorConverter;
     }
 
     @Transactional
-    public void addDoctor(DoctorDTO doctorDTO){
-        Doctor doctor = new Doctor();
-        doctor.setName(doctorDTO.getName());
-        doctor.setRoomNumber(doctorDTO.getRoomNumber());
-        doctor.setPhoneNumber(doctorDTO.getPhoneNumber());
-        doctor.setInfo(doctorDTO.getInfo());
+    public void addDoctor(DoctorDTO doctorDTO, UserDTO userDTO){
+        Doctor doctor = doctorConverter.convertToEntity(doctorDTO, new Doctor());
         if (doctorDTO.getDepartmentId() == null){
             doctor.setDepartment(null);
         }
         doctor.setDepartment(departmentRepository.findById(doctorDTO.getDepartmentId()).get());
 
-//        User user = new User();
-//        user.setEmail(doctorDTO.getEmail());
-//        user.setPassword(doctorDTO.getPassword());
-//        user.setRole(doctorDTO.getRole());
-//        userService.addUser(user);
-
+        userService.addUser(userDTO);
+        User user = userService.getUserByEmail(userDTO);
         doctor.setUser(user);
         doctorRepository.save(doctor);
     }
 
-    public Doctor getDoctorById(Long id){
+    public DoctorDTO getDoctorById(Long id){
         if (doctorRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("Doctor not found with id: " + id);
         }
-        return doctorRepository.findById(id).get();
+        DoctorDTO doctorDTO =  doctorConverter.convertToDTO(doctorRepository.findById(id).get(), new DoctorDTO());
+        doctorDTO.setDepartmentId(doctorRepository.findById(id).get().getDepartment().getDepartmentId());
+        return doctorDTO;
     }
 
     @Transactional
-    public void updateDoctor(Long departmentId, DoctorDTO doctorDTO){
-        if (doctorRepository.findById(departmentId).isEmpty()){
-            throw new NoSuchElementException("Doctor not found with id: " + departmentId);
+    public void updateDoctor(Long doctorId, DoctorDTO doctorDTO){
+        if (doctorRepository.findById(doctorId).isEmpty()){
+            throw new NoSuchElementException("Doctor not found with id: " + doctorId);
         }
-        Doctor doctor = doctorRepository.findById(departmentId).get();
-        doctor.setName(doctorDTO.getName());
-        doctor.setRoomNumber(doctorDTO.getRoomNumber());
-        doctor.setPhoneNumber(doctorDTO.getPhoneNumber());
-        doctor.setInfo(doctorDTO.getInfo());
-        if (departmentRepository.findById(departmentId).isEmpty()){
+        Doctor doctor = doctorRepository.findById(doctorId).get();
+        doctor = doctorConverter.convertToEntity(doctorDTO, doctor);
+        if (departmentRepository.findById(doctorDTO.getDepartmentId()).isEmpty()){
             doctor.setDepartment(null);
         }
-        doctor.setDepartment(departmentRepository.findById(departmentId).get());
+        doctor.setDepartment(departmentRepository.findById(doctorDTO.getDepartmentId()).get());
         doctorRepository.save(doctor);
     }
 
