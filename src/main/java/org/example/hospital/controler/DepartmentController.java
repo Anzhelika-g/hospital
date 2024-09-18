@@ -1,12 +1,15 @@
 package org.example.hospital.controler;
 
 import org.example.hospital.dto.DepartmentDTO;
-import org.example.hospital.entity.Department;
+import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/department")
@@ -20,33 +23,58 @@ public class DepartmentController {
 
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
-    public Department getDepartment(@PathVariable Long departmentId){
-        return departmentService.getDepartmentById(departmentId);
+    public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable Long departmentId){
+        try {
+            DepartmentDTO departmentDTO = departmentService.getDepartmentById(departmentId);
+            return new ResponseEntity<>(departmentDTO, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.DELETE)
-    public String removeDepartment(@PathVariable Long departmentId){
-        departmentService.deleteDepartment(departmentId);
-        return "Department deleted.";
+    public ResponseEntity<String> removeDepartment(@PathVariable Long departmentId){
+        try {
+            departmentService.deleteDepartment(departmentId);
+            return new ResponseEntity<>("Department deleted.", HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.PUT)
-    public String updateDepartment(@PathVariable Long departmentId, @RequestBody DepartmentDTO department){
-        departmentService.updateDepartment(departmentId, department.getName(), department.getDescription());
-        return "Department updated";
+    public ResponseEntity<String> updateDepartment(@PathVariable Long departmentId, @RequestBody DepartmentDTO departmentDTO){
+        try {
+            departmentService.updateDepartment(departmentId, departmentDTO);
+            return new ResponseEntity<>("Department updated.", HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addDepartment(@RequestBody DepartmentDTO departmentDTO){
-        Department department = new Department();
-        department.setName(departmentDTO.getName());
-        department.setDescription(departmentDTO.getDescription());
-        departmentService.addDepartment(department);
-        return "Department added";
+    public ResponseEntity<String> addDepartment(@RequestBody DepartmentDTO departmentDTO){
+        departmentService.addDepartment(departmentDTO);
+        return new ResponseEntity<>("Department added.", HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<Department> getAllDepartments(){
-        return departmentService.getAllDepartments();
+    public ResponseEntity< List<DepartmentDTO>> getAllDepartments(){
+        List<DepartmentDTO> departmentDTOs = departmentService.getAllDepartments();
+        return new ResponseEntity<>(departmentDTOs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{departmentId}/doctor/list", method = RequestMethod.GET)
+    public ResponseEntity< List<DoctorDTO>> getDoctorsByDepartment(@PathVariable Long departmentId){
+        try {
+            List<DoctorDTO> doctorDTOs = departmentService.getDoctorsByDepartment(departmentId);
+            return new ResponseEntity<>(doctorDTOs, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
