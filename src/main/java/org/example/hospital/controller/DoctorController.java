@@ -1,4 +1,4 @@
-package org.example.hospital.controler;
+package org.example.hospital.controller;
 
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.request.DoctorUserRequest;
