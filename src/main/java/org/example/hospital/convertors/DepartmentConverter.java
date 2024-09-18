@@ -16,9 +16,6 @@ public class DepartmentConverter implements Converter<Department, DepartmentDTO>
 
     @Override
     public Department convertToEntity(DepartmentDTO dto, Department entity) {
-        if (entity.getDepartmentId() == null) {
-            entity.setDepartmentId(dto.getDepartmentId());
-        }
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         return entity;

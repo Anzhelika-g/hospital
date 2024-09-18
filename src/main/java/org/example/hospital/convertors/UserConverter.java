@@ -17,9 +17,6 @@ public class UserConverter implements Converter<User, UserDTO>{
 
     @Override
     public User convertToEntity(UserDTO dto, User entity) {
-        if (entity.getUserId() == null) {
-            entity.setUserId(dto.getUserId());
-        }
         entity.setEmail(dto.getEmail());
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());

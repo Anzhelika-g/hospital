@@ -36,7 +36,7 @@ public class DoctorController {
     public ResponseEntity<String> removeDepartment(@PathVariable Long doctorId){
         try {
             doctorService.deleteDoctor(doctorId);
-            return new ResponseEntity<>("Doctor deleted.", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Doctor deleted.", HttpStatus.OK);
         }
         catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -19,9 +19,6 @@ public class DoctorConverter implements Converter<Doctor, DoctorDTO>{
 
     @Override
     public Doctor convertToEntity(DoctorDTO dto, Doctor entity) {
-        if (entity.getDoctorId() == null) {
-            entity.setDoctorId(dto.getDoctorId());
-        }
         entity.setName(dto.getName());
         entity.setRoomNumber(dto.getRoomNumber());
         entity.setPhoneNumber(dto.getPhoneNumber());
