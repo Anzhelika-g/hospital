@@ -30,6 +30,6 @@ public class Schedule {
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "lab_assitant_id")
+//    @JoinColumn(name = "lab_assistant_id")
     private LabAssistant labAssistant;
 }
