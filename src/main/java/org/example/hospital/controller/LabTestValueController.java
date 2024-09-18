@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/labTest/{labTestId}/lab-test-value}")
+@RequestMapping("/labTest/{labTestId}/lab-test-value")
 public class LabTestValueController {
     private final LabTestValueService labTestValueService;
     private final LabTestValueConvertor labTestValueConvertor = new LabTestValueConvertor();
@@ -60,7 +60,7 @@ public class LabTestValueController {
     public List<LabTestValueDTO> getAllLabTestValues(@PathVariable Long labTestId)
     {
 
-        return labTestValueService.getAllLabTestValues();
+        return labTestValueService.getAllLabTestValues(labTestId);
     }
 
 

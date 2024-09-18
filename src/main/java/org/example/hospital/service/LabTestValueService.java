@@ -64,8 +64,8 @@ public class LabTestValueService {
         labTestValueRepository.deleteById(id);
     }
 
-    public List<LabTestValueDTO> getAllLabTestValues(){
-        List<LabTestValue> labTestValues = labTestValueRepository.findAllByLabTestId();
+    public List<LabTestValueDTO> getAllLabTestValues(Long labTestId){
+        List<LabTestValue> labTestValues = labTestValueRepository.findAllByLabTestLabTestId(labTestId);
         List<LabTestValueDTO> labTestValueDTOS = new ArrayList<>();
         for(LabTestValue labTestValue: labTestValues)
         {

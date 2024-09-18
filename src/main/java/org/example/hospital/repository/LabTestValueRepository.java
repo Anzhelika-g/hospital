@@ -11,5 +11,5 @@ import java.util.List;
 public interface LabTestValueRepository extends JpaRepository<LabTestValue, Long> {
 
 
-    List<LabTestValue> findAllByLabTestId();
+    List<LabTestValue> findAllByLabTestLabTestId(Long labTestId);
 }

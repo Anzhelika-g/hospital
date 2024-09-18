@@ -21,6 +21,12 @@ public class LabTestResultConvertor implements Converter<LabTestResult, LabTestR
         dto.setLabTest(entity.getLabTest());
         dto.setPatient(entity.getPatient());
         dto.setLabAssistant(entity.getLabAssistant());
+
+        List<LabTestResultValueDTO> labTestResultValueDTOS = new ArrayList<>();
+        for(LabTestResultValue labTestResultValue: entity.getLabTestResultValues())
+        {
+            labTestResultValueDTOS.add(labTestResultValueConvertor.convertToDTO(labTestResultValue,new LabTestResultValueDTO()));
+        }
         return dto;
     }
 
