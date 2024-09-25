@@ -2,7 +2,9 @@ package org.example.hospital.convertors;
 
 import org.example.hospital.dto.AppointmentDTO;
 import org.example.hospital.entity.Appointment;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AppointmentConvertor implements Converter<Appointment, AppointmentDTO> {
     @Override
     public AppointmentDTO convertToDTO(Appointment entity, AppointmentDTO dto) {

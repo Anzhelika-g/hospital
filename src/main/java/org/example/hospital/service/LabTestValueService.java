@@ -32,13 +32,13 @@ public class LabTestValueService {
         labTestValueRepository.save(labTestValue);
     }
 
-    public LabTestValue getLabTestValue(Long id)
+    public LabTestValueDTO getLabTestValue(Long id)
     {
         if(labTestValueRepository.findById(id).isEmpty())
         {
             throw new NoSuchElementException("Lab test value not found");
         }
-        return labTestValueRepository.findById(id).get();
+        return labTestValueConvertor.convertToDTO(labTestValueRepository.findById(id).get(), new LabTestValueDTO());
     }
 
     @Transactional

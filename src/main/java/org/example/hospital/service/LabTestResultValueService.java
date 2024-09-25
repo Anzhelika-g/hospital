@@ -3,12 +3,15 @@ package org.example.hospital.service;
 
 import org.example.hospital.convertors.LabTestResultValueConvertor;
 import org.example.hospital.dto.LabTestResultValueDTO;
+import org.example.hospital.entity.LabAssistant;
+import org.example.hospital.entity.LabTestResult;
 import org.example.hospital.entity.LabTestResultValue;
 import org.example.hospital.repository.LabTestResultValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -30,11 +33,11 @@ public class LabTestResultValueService {
         labTestResultValueRepository.save(labTestResultValue);
     }
 
-    public LabTestResultValue getLabTestResultValue(Long id){
+    public LabTestResultValueDTO getLabTestResultValue(Long id){
         if (labTestResultValueRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("lab test result value not found with id: " + id);
         }
-        return labTestResultValueRepository.findById(id).get();
+        return labTestResultValueConvertor.convertToDTO(labTestResultValueRepository.findById(id).get(), new LabTestResultValueDTO());
     }
 
     @Transactional
@@ -57,7 +60,14 @@ public class LabTestResultValueService {
         labTestResultValueRepository.deleteById(id);
     }
 
-    public List<LabTestResultValue> getAllLabTestResultValue(){
-        return labTestResultValueRepository.findAll();
+    public List<LabTestResultValueDTO> getAllLabTestResultValue(){
+        List<LabTestResultValue> labTestResultValues = labTestResultValueRepository.findAll();
+        List<LabTestResultValueDTO> labTestResultValueDTOS = new ArrayList<>();
+        for(LabTestResultValue labTestResultValue: labTestResultValues)
+        {
+            LabTestResultValueDTO labTestResultValueDTO = labTestResultValueConvertor.convertToDTO(labTestResultValue, new LabTestResultValueDTO());
+            labTestResultValueDTOS.add(labTestResultValueDTO);
+        }
+        return labTestResultValueDTOS;
     }
 }

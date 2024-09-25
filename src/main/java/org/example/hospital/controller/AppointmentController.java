@@ -2,10 +2,16 @@ package org.example.hospital.controller;
 
 import org.example.hospital.convertors.AppointmentConvertor;
 import org.example.hospital.dto.AppointmentDTO;
+import org.example.hospital.dto.DepartmentDTO;
 import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/appointment")
@@ -18,44 +24,40 @@ public class AppointmentController {
         this.appointmentService = appointmentService;
     }
     @RequestMapping(value = "/{appointmentId}", method = RequestMethod.GET)
-    public AppointmentDTO getAppointment(@PathVariable Long appointmentId, @RequestBody AppointmentDTO appointmentDTO)
+    public ResponseEntity<AppointmentDTO> getAppointment(@PathVariable Long appointmentId)
     {
-        return appointmentConvertor.convertToDTO(appointmentService.getAppointment(appointmentId), appointmentDTO);
+        try {
+            AppointmentDTO appointmentDTO = appointmentService.getAppointment(appointmentId);
+            return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
     }
     @RequestMapping(value = "/{appointmentId}", method = RequestMethod.DELETE)
-    public String deleteAppointment(@PathVariable Long appointmentId)
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long appointmentId)
     {
-        appointmentService.deleteAppointment(appointmentId);
-        return "appointment deleted";
+        try {
+            appointmentService.deleteAppointment(appointmentId);
+            return new ResponseEntity<>("Appointment deleted.", HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-    @RequestMapping(method = RequestMethod.POST)
-    public String addAppointment(@RequestBody AppointmentDTO appointmentDTO)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<String> addAppointment(@RequestBody AppointmentDTO appointmentDTO)
     {
         appointmentService.addAppointment(appointmentDTO);
-        return "Appointment added";
+        return new ResponseEntity<>("Appointment Created", HttpStatus.CREATED);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity<List<AppointmentDTO>>getAllAppointments()
+    {
+        List<AppointmentDTO> appointmentDTOS = appointmentService.getAllAppointments();
+        return new ResponseEntity<>(appointmentDTOS, HttpStatus.OK);
+    }
 
 }

@@ -3,6 +3,7 @@ package org.example.hospital.service;
 
 import org.example.hospital.convertors.LabAssistantConvertor;
 import org.example.hospital.convertors.LabTestResultConvertor;
+import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.dto.LabTestResultDTO;
 import org.example.hospital.entity.LabAssistant;
 import org.example.hospital.entity.LabTest;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -35,11 +37,11 @@ public class LabTestResultService {
         labTestResultRepository.save(labTestResult);
     }
 
-    public LabTestResult getLabTestResultById(Long id){
+    public LabTestResultDTO getLabTestResultById(Long id){
         if (labTestResultRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("lab test result not found with id: " + id);
         }
-        return labTestResultRepository.findById(id).get();
+        return labTestResultConvertor.convertToDTO(labTestResultRepository.findById(id).get(), new LabTestResultDTO());
     }
 
     @Transactional
@@ -62,7 +64,14 @@ public class LabTestResultService {
         labTestResultRepository.deleteById(id);
     }
 
-    public List<LabTestResult> getAllLabTestResult(){
-        return labTestResultRepository.findAll();
+    public List<LabTestResultDTO> getAllLabTestResult(){
+        List<LabTestResult> labTestResults = labTestResultRepository.findAll();
+        List<LabTestResultDTO> labTestResultDTOS = new ArrayList<>();
+        for(LabTestResult labTestResult: labTestResults)
+        {
+            LabTestResultDTO labTestResultDTO = labTestResultConvertor.convertToDTO(labTestResult, new LabTestResultDTO());
+            labTestResultDTOS.add(labTestResultDTO);
+        }
+        return labTestResultDTOS;
     }
 }

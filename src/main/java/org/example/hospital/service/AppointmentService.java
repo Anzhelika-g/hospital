@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,13 +32,13 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
-    public Appointment getAppointment(Long id)
+    public AppointmentDTO getAppointment(Long id)
     {
         if(appointmentRepository.findById(id).isEmpty())
         {
             throw new NoSuchElementException("Not found with id "+id);
         }
-        return appointmentRepository.findById(id).get();
+        return appointmentConvertor.convertToDTO(appointmentRepository.findById(id).get(), new AppointmentDTO());
 
     }
     @Transactional
@@ -59,8 +60,16 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
-    public List<Appointment> getAllAppointments(){
-        return appointmentRepository.findAll();
+    public List<AppointmentDTO> getAllAppointments(){
+        List<Appointment> appointments = appointmentRepository.findAll();
+        List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
+        for(Appointment appointment: appointments)
+        {
+            AppointmentDTO appointmentDTO = appointmentConvertor.convertToDTO(appointment, new AppointmentDTO());
+            appointmentDTOS.add(appointmentDTO);
+
+        }
+        return appointmentDTOS;
     }
 
 

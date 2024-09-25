@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -31,11 +32,11 @@ public class LabAssistantService {
         labAssistantRepository.save(labAssistant);
     }
 
-    public LabAssistant getLabAssistantById(Long id){
+    public LabAssistantDTO getLabAssistantById(Long id){
         if (labAssistantRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("labAssistant not found with id: " + id);
         }
-        return labAssistantRepository.findById(id).get();
+        return labAssistantConvertor.convertToDTO(labAssistantRepository.findById(id).get(), new LabAssistantDTO());
     }
 
     @Transactional
@@ -57,8 +58,15 @@ public class LabAssistantService {
         labAssistantRepository.deleteById(id);
     }
 
-    public List<LabAssistant> getAllLabAssistant(){
-        return labAssistantRepository.findAll();
+    public List<LabAssistantDTO> getAllLabAssistant(){
+        List<LabAssistant> labAssistants = labAssistantRepository.findAll();
+        List<LabAssistantDTO> labAssistantDTOS = new ArrayList<>();
+        for(LabAssistant labAssistant: labAssistants)
+        {
+            LabAssistantDTO labAssistantDTO = labAssistantConvertor.convertToDTO(labAssistant, new LabAssistantDTO());
+            labAssistantDTOS.add(labAssistantDTO);
+        }
+        return labAssistantDTOS;
     }
 
 }

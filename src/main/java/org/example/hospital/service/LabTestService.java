@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -30,13 +31,13 @@ public class LabTestService {
 
         labTestRepository.save(labTest);
     }
-    public LabTest getLabTest(Long id)
+    public LabTestDTO getLabTest(Long id)
     {
         if(labTestRepository.findById(id).isEmpty())
         {
             throw new NoSuchElementException("Lab test not found");
         }
-        return labTestRepository.findById(id).get();
+        return labTestConvertor.convertToDTO(labTestRepository.findById(id).get(), new LabTestDTO());
     }
 
     @Transactional
@@ -63,8 +64,15 @@ public class LabTestService {
         labTestRepository.deleteById(id);
     }
 
-    public List<LabTest> getAllLabTests(){
-        return labTestRepository.findAll();
+    public List<LabTestDTO> getAllLabTests(){
+        List<LabTest> labTests = labTestRepository.findAll();
+        List<LabTestDTO> labTestDTOS = new ArrayList<>();
+        for(LabTest labTest: labTests)
+        {
+            LabTestDTO labTestDTO = labTestConvertor.convertToDTO(labTest, new LabTestDTO());
+            labTestDTOS.add(labTestDTO);
+        }
+        return labTestDTOS;
     }
 
 

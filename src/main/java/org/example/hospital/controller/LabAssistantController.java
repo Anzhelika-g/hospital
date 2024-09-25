@@ -5,10 +5,13 @@ import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.entity.LabAssistant;
 import org.example.hospital.service.LabAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/lab-assistant")
@@ -23,41 +26,57 @@ public class LabAssistantController {
     }
 
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.GET)
-    public LabAssistantDTO getLabAssistant(@PathVariable Long labAssistantId, @RequestBody LabAssistantDTO labAssistantDTO)
+    public ResponseEntity<LabAssistantDTO> getLabAssistant(@PathVariable Long labAssistantId)
     {
-        return labAssistantConvertor.convertToDTO(labAssistantService.getLabAssistantById(labAssistantId), labAssistantDTO);
-
+        try {
+            LabAssistantDTO labAssistantDTO = labAssistantService.getLabAssistantById(labAssistantId);
+            return new ResponseEntity<>(labAssistantDTO, HttpStatus.OK);
+        }catch (NoSuchElementException e)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.DELETE)
-    public String deleteLabAssistant(@PathVariable Long labAssistantId)
+    public ResponseEntity<String> deleteLabAssistant(@PathVariable Long labAssistantId)
     {
-        labAssistantService.deleteLabAssistant(labAssistantId);
-        return "lab assistant deleted";
+        try {
+            labAssistantService.deleteLabAssistant(labAssistantId);
+            return new ResponseEntity<>("Lab assistant deleted", HttpStatus.OK);
+
+        }catch (NoSuchElementException e)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.PUT)
-    public String updateLabAssistant(@PathVariable Long labAssistantId, @RequestBody LabAssistantDTO labAssistantDTO)
+    public ResponseEntity<String> updateLabAssistant(@PathVariable Long labAssistantId, @RequestBody LabAssistantDTO labAssistantDTO)
     {
-        labAssistantService.updateLabAssistant(labAssistantId,labAssistantDTO);
-        return "lab assistant updated";
+        try {
+            labAssistantService.updateLabAssistant(labAssistantId,labAssistantDTO);
+            return new ResponseEntity<>("Lab assistant updated", HttpStatus.OK);
+        }catch (NoSuchElementException e)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addLabAssistant(@RequestBody LabAssistantDTO labAssistantDTO)
+    public ResponseEntity<String> addLabAssistant(@RequestBody LabAssistantDTO labAssistantDTO)
     {
-
-        labAssistantService.addLabAssistant(labAssistantDTO);
-        return "lab assistant added";
+        try {
+            labAssistantService.addLabAssistant(labAssistantDTO);
+            return new ResponseEntity<>("Lab assistant added",HttpStatus.CREATED);
+        }catch (NoSuchElementException e)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<LabAssistantDTO> getAllLabAssistants()
+    public ResponseEntity<List<LabAssistantDTO>> getAllLabAssistants()
     {
-        List<LabAssistantDTO> labAssistantDTOS = new ArrayList<>();
-        for (LabAssistant labAssistant: labAssistantService.getAllLabAssistant())
-        {
-            labAssistantDTOS.add(labAssistantConvertor.convertToDTO(labAssistant, new LabAssistantDTO()));
-        }
-        return labAssistantDTOS;
+        List<LabAssistantDTO> labAssistantDTOS = labAssistantService.getAllLabAssistant();
+        return new ResponseEntity<>(labAssistantDTOS, HttpStatus.OK);
     }
 }
 
