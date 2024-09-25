@@ -22,14 +22,16 @@ public class DoctorMessageController {
 
     @RequestMapping(value = "/send")
     public ResponseEntity<String> sendMessage(@PathVariable Long doctorId, @RequestBody MessageDTO messageDTO){
-        messageService.addMessage(doctorId, messageDTO);
+        Long senderId = 3L;
+        messageService.addMessage(doctorId, senderId, messageDTO);
         return new ResponseEntity<>("Message sent.", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/list")
     private ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long doctorId){
+        Long senderId = 3L;
         try {
-            List<MessageDTO> messageDTOS = messageService.getMessagesSentToUser(doctorId);
+            List<MessageDTO> messageDTOS = messageService.getMessagesSentToUser(senderId ,doctorId);
             return new ResponseEntity<>(messageDTOS, HttpStatus.OK);
         }
         catch (NoSuchElementException e){

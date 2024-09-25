@@ -24,10 +24,10 @@ public class MessageService {
     }
 
     @Transactional
-    public void addMessage(Long receiverId, MessageDTO messageDTO){
+    public void addMessage(Long senderId, Long receiverId, MessageDTO messageDTO){
         Message message = new Message();
-        message.setSender(userService.getUserById(messageDTO.getSenderId()));
-        message.setReceiver(userService.getUserById(receiverId));
+        message.setSender(userService.getUserReferenceById(senderId));
+        message.setReceiver(userService.getUserReferenceById(receiverId));
         message.setContent(messageDTO.getContent());
         message.setTime(LocalDateTime.now());
         messageRepository.save(message);
@@ -53,8 +53,6 @@ public class MessageService {
             throw new NoSuchElementException("Message not found with id" + id);
         }
         Message message = messageRepository.findById(id).get();
-        message.setSender(userService.getUserById(messageDTO.getSenderId()));
-        message.setReceiver(userService.getUserById(messageDTO.getReceiverId()));
         message.setContent(messageDTO.getContent());
         messageRepository.save(message);
     }
@@ -67,18 +65,19 @@ public class MessageService {
         messageRepository.deleteById(id);
     }
 
-    public List<MessageDTO> getMessagesSentToUser(Long id){
-        if (userService.getUserById(id) == null){
-            throw new NoSuchElementException("User not found with id" + id);
+
+    public List<MessageDTO> getMessagesSentToUser(Long senderId, Long receiverId) {
+        if (userService.getUserById(receiverId) == null) {
+            throw new NoSuchElementException("User not found with id " + receiverId);
         }
 
-        List<Message> messages = messageRepository.findMessagesByReceiver_UserId(id);
-        if (messages.isEmpty()){
-            throw new NoSuchElementException("Receiver with id " + id + " has no received messages.");
+        List<Message> messages = messageRepository.findMessagesBySender_UserIdAndReceiver_UserId(senderId, receiverId);
+        if (messages.isEmpty()) {
+            throw new NoSuchElementException("Receiver with id " + receiverId + " has no received messages from sender with id " + senderId + ".");
         }
 
         List<MessageDTO> messageDTOS = new ArrayList<>();
-        for (Message message : messages){
+        for (Message message : messages) {
             MessageDTO messageDTO = new MessageDTO();
             messageDTO.setMessageId(message.getMessageId());
             messageDTO.setSenderId(message.getSender().getUserId());
@@ -87,6 +86,7 @@ public class MessageService {
             messageDTO.setTime(message.getTime());
             messageDTOS.add(messageDTO);
         }
+
         return messageDTOS;
     }
 }

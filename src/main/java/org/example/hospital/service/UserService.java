@@ -55,4 +55,8 @@ public class UserService {
     public User getUserByEmail(UserDTO userDTO){
         return userRepository.findByEmail(userDTO.getEmail());
     }
+
+    public User getUserReferenceById(Long senderId) {
+        return userRepository.getReferenceById(senderId);
+    }
 }
