@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -38,5 +39,8 @@ public class Doctor {
 
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "doctor")
+    private Set<Patient> patients;
 
 }
