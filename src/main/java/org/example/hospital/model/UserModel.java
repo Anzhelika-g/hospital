@@ -1,22 +1,11 @@
 package org.example.hospital.model;
 
+import lombok.Data;
+import org.example.hospital.enums.Role;
+
+@Data
 public class UserModel {
     private String email;
     private String password;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private Role role;
 }
