@@ -33,4 +33,6 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     private List<Prescription> prescriptions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    List<Review> reviews;
 }
