@@ -27,6 +27,10 @@ public class Patient {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "doctorId")
+    private Doctor doctor;
+
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments = new ArrayList<>();
 

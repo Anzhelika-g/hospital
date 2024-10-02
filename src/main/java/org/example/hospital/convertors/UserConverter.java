@@ -2,6 +2,7 @@ package org.example.hospital.convertors;
 
 import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.User;
+import org.example.hospital.enums.Role;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,7 @@ public class UserConverter implements Converter<User, UserDTO>{
         dto.setUserId(entity.getUserId());
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
-        dto.setRole(entity.getRole());
+        dto.setRole(entity.getRole().name());
         return dto;
     }
 
@@ -19,7 +20,7 @@ public class UserConverter implements Converter<User, UserDTO>{
     public User convertToEntity(UserDTO dto, User entity) {
         entity.setEmail(dto.getEmail());
         entity.setPassword(dto.getPassword());
-        entity.setRole(dto.getRole());
+        entity.setRole(Role.valueOf(dto.getRole()));
         return entity;
     }
 }
