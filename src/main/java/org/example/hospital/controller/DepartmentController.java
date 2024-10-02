@@ -2,6 +2,7 @@ package org.example.hospital.controller;
 
 import org.example.hospital.dto.DepartmentDTO;
 import org.example.hospital.dto.DoctorDTO;
+import org.example.hospital.dto.ReviewDTO;
 import org.example.hospital.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,4 +78,9 @@ public class DepartmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+//    @RequestMapping(value = "/{departmentId}/doctor/{doctorId}/review", method = RequestMethod.POST)
+//    public ResponseEntity<String> addReview(@RequestBody ReviewDTO reviewDTO)
+//    {
+//
+//    }
 }

@@ -1,5 +1,4 @@
 package org.example.hospital.dto;
-
 import lombok.Data;
 
 @Data

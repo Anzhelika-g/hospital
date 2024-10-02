@@ -43,4 +43,6 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor")
     private Set<Patient> patients;
 
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    List<Review> reviews;
 }

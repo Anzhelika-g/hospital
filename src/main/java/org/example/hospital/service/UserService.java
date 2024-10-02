@@ -80,4 +80,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(userDTO.getEmail())
                 .orElseThrow(() -> new NoSuchElementException("User not found with email: " + userDTO.getEmail()));
     }
+
+    public User getUserReferenceById(Long senderId) {
+        return userRepository.getReferenceById(senderId);
+    }
 }

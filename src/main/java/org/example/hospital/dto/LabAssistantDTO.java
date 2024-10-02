@@ -1,6 +1,9 @@
 package org.example.hospital.dto;
 
+@Data
 public class LabAssistantDTO {
     private Long labAssistantId;
-    private String name;
+
+    private String testName;
+    private String testResult;
 }
