@@ -10,8 +10,8 @@ import java.util.Date;
 @Data
 public class AppointmentDTO {
     private Long appointmentId;
-    private Doctor doctor;
-    private Patient patient;
+    private DoctorDTO doctorDTO;
+    private PatientDTO patientDTO;
     private Date time;
     private int duration;
     private String symptoms;

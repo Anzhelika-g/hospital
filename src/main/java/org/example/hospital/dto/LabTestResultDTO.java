@@ -14,8 +14,8 @@ public class LabTestResultDTO {
 
     private Long labTestResultId;
 
-   private LabTest labTest;
-   private Patient patient;
-   private LabAssistant labAssistant;
+   private LabTestDTO labTestDTO;
+   private PatientDTO patientDTo;
+   private LabAssistantDTO labAssistantTO;
    private List<LabTestResultValueDTO> labTestResultValues = new ArrayList<>();
 }

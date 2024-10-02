@@ -1,6 +1,7 @@
 package org.example.hospital.controller;
 
 
+import jakarta.websocket.server.PathParam;
 import org.example.hospital.convertors.LabTestValueConvertor;
 import org.example.hospital.dto.LabTestDTO;
 import org.example.hospital.dto.LabTestResultValueDTO;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/labTest/{labTestId}/lab-test-value")
+@RequestMapping("/labTest/{labTestId}/labTestValue")
 public class LabTestValueController {
     private final LabTestValueService labTestValueService;
     private final LabTestValueConvertor labTestValueConvertor = new LabTestValueConvertor();
@@ -68,14 +69,14 @@ public class LabTestValueController {
         }
     }
 
-    @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity<String> addLabTestValue(@RequestBody LabTestValueDTO labTestValueDTO)
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public ResponseEntity<String> addLabTestValue(@PathVariable Long labTestId, @RequestBody LabTestValueDTO labTestValueDTO)
     {
-        labTestValueService.addLabTestValue(labTestValueDTO);
+        labTestValueService.addLabTestValue(labTestValueDTO, labTestId);
         return new ResponseEntity<>("Lab test value created",HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<LabTestValueDTO>> getAllLabTestValues(@PathVariable Long labTestId)
     {
         try {

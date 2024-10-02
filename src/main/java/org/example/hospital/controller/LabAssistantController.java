@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/lab-assistant")
+@RequestMapping("/labAssistant")
 public class LabAssistantController {
     private final LabAssistantService labAssistantService;
     private final LabAssistantConvertor labAssistantConvertor = new LabAssistantConvertor();
@@ -61,7 +61,7 @@ public class LabAssistantController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<String> addLabAssistant(@RequestBody LabAssistantDTO labAssistantDTO)
     {
         try {

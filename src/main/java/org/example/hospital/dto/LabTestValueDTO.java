@@ -8,7 +8,7 @@ import org.example.hospital.entity.LabTest;
 public class LabTestValueDTO {
     private Long labTestValueId;
 
-    private LabTest labTest;
+    private LabTestDTO labTestDTO;
     private String name;
     private double normMin;
     private double normMax;

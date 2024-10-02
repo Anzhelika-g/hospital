@@ -9,8 +9,8 @@ import org.example.hospital.entity.LabTestValue;
 public class LabTestResultValueDTO {
     private Long labTestResultValueId;
 
-    private LabTestResult labTestResult;
-    private LabTestValue labTestValue;
+    private LabTestResultDTO labTestResultDTO;
+    private LabTestValueDTO labTestValueDTO;
     private double value;
     private boolean norm;
 }

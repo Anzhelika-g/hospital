@@ -67,11 +67,11 @@ public class LabTestController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<String> addLabTest(@RequestBody LabTestDTO labTestDTO)
     {
         labTestService.addLabTest(labTestDTO);
-        return new ResponseEntity<>("Lab test updated", HttpStatus.OK);
+        return new ResponseEntity<>("Lab test created", HttpStatus.OK);
     }
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<LabTestDTO>> getAllLabTests()
@@ -88,8 +88,7 @@ public class LabTestController {
     public ResponseEntity<String> createLabTestResult(@RequestBody LabTestResultDTO labTestResultDTO, @PathVariable Long labTestId)
     {
         try {
-            LabTest labTest = labTestService.getLabTest(labTestId);
-            labTestResultService.addLabTestResult(labTestResultDTO, labTest);
+            labTestResultService.addLabTestResult(labTestResultDTO, labTestConvertor.convertToEntity(labTestService.getLabTest(labTestId), new LabTest()));
             return new ResponseEntity<>("Lab test result created", HttpStatus.CREATED);
         }catch (NoSuchElementException e)
         {
