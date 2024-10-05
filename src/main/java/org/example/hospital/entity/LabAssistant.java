@@ -14,6 +14,7 @@ public class LabAssistant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lab_assistant_id")
     private Long labAssistantId;
+    private String name;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")

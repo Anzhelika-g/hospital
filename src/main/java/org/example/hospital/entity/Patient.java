@@ -27,10 +27,16 @@ public class Patient {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "doctorId")
+    private Doctor doctor;
+
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
     private List<Prescription> prescriptions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    List<Review> reviews;
 }

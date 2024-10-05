@@ -2,8 +2,10 @@ package org.example.hospital.service;
 
 import org.example.hospital.convertors.DepartmentConverter;
 import org.example.hospital.convertors.DoctorConverter;
+import org.example.hospital.convertors.ReviewConvertor;
 import org.example.hospital.dto.DepartmentDTO;
 import org.example.hospital.dto.DoctorDTO;
+import org.example.hospital.dto.ReviewDTO;
 import org.example.hospital.entity.Department;
 import org.example.hospital.entity.Doctor;
 import org.example.hospital.repository.DepartmentRepository;
@@ -21,12 +23,14 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final DepartmentConverter departmentConverter;
     private final DoctorConverter doctorConverter;
+    private final ReviewConvertor reviewConvertor;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository, DepartmentConverter departmentConverter, DoctorConverter doctorConverter) {
+    public DepartmentService(DepartmentRepository departmentRepository, DepartmentConverter departmentConverter, DoctorConverter doctorConverter, ReviewConvertor reviewConvertor) {
         this.departmentRepository = departmentRepository;
         this.departmentConverter = departmentConverter;
         this.doctorConverter = doctorConverter;
+        this.reviewConvertor = reviewConvertor;
     }
 
     @Transactional
@@ -87,4 +91,8 @@ public class DepartmentService {
         }
         return doctorDTOs;
     }
+//    public ReviewDTO getReview(ReviewDTO reviewDTO, - departmentId, Long doctorId)
+//    {
+//
+//    }
 }
