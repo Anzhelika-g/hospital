@@ -3,6 +3,7 @@ package org.example.hospital.service;
 import org.example.hospital.convertors.DoctorConverter;
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.dto.UserDTO;
+import org.example.hospital.entity.Department;
 import org.example.hospital.entity.Doctor;
 import org.example.hospital.entity.User;
 import org.example.hospital.repository.DepartmentRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DoctorService {
@@ -43,26 +45,35 @@ public class DoctorService {
     }
 
     public DoctorDTO getDoctorById(Long id){
-        if (doctorRepository.findById(id).isEmpty()){
+        Optional<Doctor> doctor = doctorRepository.findById(id);
+        if (doctor.isEmpty()){
             throw new NoSuchElementException("Doctor not found with id: " + id);
         }
-        DoctorDTO doctorDTO =  doctorConverter.convertToDTO(doctorRepository.findById(id).get(), new DoctorDTO());
-        doctorDTO.setDepartmentId(doctorRepository.findById(id).get().getDepartment().getDepartmentId());
+        DoctorDTO doctorDTO =  doctorConverter.convertToDTO(doctor.get(), new DoctorDTO());
+        if (doctor.get().getDepartment() != null) {
+            doctorDTO.setDepartmentId(doctor.get().getDepartment().getDepartmentId());
+        }
+        else {
+            doctorDTO.setDepartmentId(null);
+        }
+
         return doctorDTO;
     }
 
     @Transactional
     public void updateDoctor(Long doctorId, DoctorDTO doctorDTO){
-        if (doctorRepository.findById(doctorId).isEmpty()){
+        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
+        if (doctor.isEmpty()){
             throw new NoSuchElementException("Doctor not found with id: " + doctorId);
         }
-        Doctor doctor = doctorRepository.findById(doctorId).get();
-        doctor = doctorConverter.convertToEntity(doctorDTO, doctor);
-        if (departmentRepository.findById(doctorDTO.getDepartmentId()).isEmpty()){
-            doctor.setDepartment(null);
+
+        Doctor doctor1 = doctorConverter.convertToEntity(doctorDTO, doctor.get());
+        Optional<Department> department = departmentRepository.findById(doctorDTO.getDepartmentId());
+        if (department.isEmpty()){
+            doctor1.setDepartment(null);
         }
-        doctor.setDepartment(departmentRepository.findById(doctorDTO.getDepartmentId()).get());
-        doctorRepository.save(doctor);
+        doctor1.setDepartment(department.get());
+        doctorRepository.save(doctor1);
     }
 
     @Transactional

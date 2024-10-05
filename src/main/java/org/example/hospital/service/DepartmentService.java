@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DepartmentService {
@@ -39,20 +40,21 @@ public class DepartmentService {
     }
 
     public DepartmentDTO getDepartmentById(Long id){
-        if (departmentRepository.findById(id).isEmpty()){
+        Optional<Department> department = departmentRepository.findById(id);
+        if (department.isEmpty()){
             throw new NoSuchElementException("Department not found with id: " + id);
         }
-        return departmentConverter.convertToDTO(departmentRepository.findById(id).get(), new DepartmentDTO());
+        return departmentConverter.convertToDTO(department.get(), new DepartmentDTO());
     }
 
     @Transactional
     public void updateDepartment(Long departmentId, DepartmentDTO departmentDTO){
-        if (departmentRepository.findById(departmentId).isEmpty()){
+        Optional<Department> department = departmentRepository.findById(departmentId);
+        if (department.isEmpty()){
             throw new NoSuchElementException("Department not found with id: " + departmentId);
         }
-        Department department = departmentRepository.findById(departmentId).get();
-        department = departmentConverter.convertToEntity(departmentDTO, department);
-        departmentRepository.save(department);
+        Department department1 = departmentConverter.convertToEntity(departmentDTO, department.get());
+        departmentRepository.save(department1);
     }
 
     @Transactional
@@ -75,10 +77,11 @@ public class DepartmentService {
     }
 
     public List<DoctorDTO> getDoctorsByDepartment(Long id){
-        if (departmentRepository.findById(id).isEmpty()){
+        Optional<Department> department = departmentRepository.findById(id);
+        if (department.isEmpty()){
             throw new NoSuchElementException("Department not found with id: " + id);
         }
-        List<Doctor> doctors = departmentRepository.findById(id).get().getDoctors();
+        List<Doctor> doctors = department.get().getDoctors();
         List<DoctorDTO> doctorDTOs = new ArrayList<>();
 
         for (Doctor doctor : doctors) {
