@@ -10,8 +10,8 @@ public class ReviewConvertor implements Converter<Review, ReviewDTO>{
     public ReviewDTO convertToDTO(Review entity, ReviewDTO dto) {
         dto.setReviewId(entity.getReviewId());
         dto.setFeedback(entity.getFeedback());
-        dto.setDoctor(entity.getDoctor());
-        dto.setPatient(entity.getPatient());
+        dto.setDoctorId(entity.getDoctor().getDoctorId());
+        dto.setPatientId(entity.getPatient().getPatientId());
         dto.setRating(entity.getRating());
         return dto;
     }
@@ -20,8 +20,6 @@ public class ReviewConvertor implements Converter<Review, ReviewDTO>{
     public Review convertToEntity(ReviewDTO dto, Review entity) {
         entity.setReviewId(dto.getReviewId());
         entity.setFeedback(dto.getFeedback());
-        entity.setDoctor(dto.getDoctor());
-        entity.setPatient(dto.getPatient());
         entity.setRating(dto.getRating());
         return entity;
     }

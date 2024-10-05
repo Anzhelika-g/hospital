@@ -9,7 +9,7 @@ public class LabTestValueConvertor implements Converter<LabTestValue, LabTestVal
     @Override
     public LabTestValueDTO convertToDTO(LabTestValue entity, LabTestValueDTO dto) {
         dto.setLabTestValueId(entity.getLabTestValueId());
-        dto.setLabTest(entity.getLabTest());
+        dto.setLabTestId(entity.getLabTest().getLabTestId());
         dto.setName(entity.getName());
         dto.setNormMax(entity.getNormMax());
         dto.setNormMin(entity.getNormMin());
@@ -18,7 +18,6 @@ public class LabTestValueConvertor implements Converter<LabTestValue, LabTestVal
 
     @Override
     public LabTestValue convertToEntity(LabTestValueDTO dto, LabTestValue entity) {
-        entity.setLabTest(dto.getLabTest());
         entity.setName(dto.getName());
         entity.setNormMin(dto.getNormMin());
         entity.setNormMax(dto.getNormMax());

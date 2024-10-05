@@ -10,7 +10,7 @@ import org.example.hospital.entity.Patient;
 public class ReviewDTO {
     private Long reviewId;
     private  int rating;
-    private PatientDTO patientDTO;
+    private Long patientId;
     private String feedback;
-    private DoctorDTO doctorDTO;
+    private Long doctorId;
 }
