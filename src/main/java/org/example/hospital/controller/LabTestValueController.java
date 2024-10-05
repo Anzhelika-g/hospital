@@ -33,8 +33,7 @@ public class LabTestValueController {
     {
         try {
             LabTestValueDTO labTestValueDTO = labTestValueService.getLabTestValue(labTestValueId);
-            LabTestValue labTestValue = labTestValueConvertor.convertToEntity(labTestValueDTO, new LabTestValue());
-            if (labTestValue.getLabTest().getLabTestId() != labTestId) {
+            if (labTestValueDTO.getLabTestId() != labTestId) {
                 throw new NoSuchElementException("Id doesnt exist");
             }
 

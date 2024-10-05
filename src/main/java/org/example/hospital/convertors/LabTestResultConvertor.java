@@ -18,9 +18,9 @@ public class LabTestResultConvertor implements Converter<LabTestResult, LabTestR
     @Override
     public LabTestResultDTO convertToDTO(LabTestResult entity, LabTestResultDTO dto) {
         dto.setLabTestResultId(entity.getLabTestResultId());
-        dto.setLabTest(entity.getLabTest());
-        dto.setPatient(entity.getPatient());
-        dto.setLabAssistant(entity.getLabAssistant());
+        dto.setLabTestId(entity.getLabTest().getLabTestId());
+        dto.setPatientId(entity.getPatient().getPatientId());
+        dto.setLabAssistantId(entity.getLabAssistant().getLabAssistantId());
 
         List<LabTestResultValueDTO> labTestResultValueDTOS = new ArrayList<>();
         for(LabTestResultValue labTestResultValue: entity.getLabTestResultValues())
@@ -32,9 +32,6 @@ public class LabTestResultConvertor implements Converter<LabTestResult, LabTestR
 
     @Override
     public LabTestResult convertToEntity(LabTestResultDTO dto, LabTestResult entity) {
-        entity.setLabTest(dto.getLabTest());
-        entity.setPatient(dto.getPatient());
-        entity.setLabAssistant(dto.getLabAssistant());
 
         List<LabTestResultValue> labTestResultValues = new ArrayList<>();
         for (LabTestResultValueDTO labTestResultValueDTO : dto.getLabTestResultValues()) {

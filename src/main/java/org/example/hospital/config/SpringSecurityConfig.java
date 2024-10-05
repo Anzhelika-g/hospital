@@ -44,9 +44,9 @@ public class SpringSecurityConfig {
                         // Public endpoints accessible to everyone
                         .requestMatchers("/patient/register","/login").permitAll()
                         // Admin-restricted endpoints
-                        .requestMatchers("/admin/register", "/doctor/register", "labassistant/register").hasRole("ADMIN")
+//                        .requestMatchers("/admin/register", "/doctor/register", "labassistant/register").hasRole("ADMIN")
                         // All other requests need authentication
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .build();

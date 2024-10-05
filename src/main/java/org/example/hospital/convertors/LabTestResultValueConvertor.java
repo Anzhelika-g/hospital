@@ -9,8 +9,8 @@ public class LabTestResultValueConvertor implements Converter<LabTestResultValue
     @Override
     public LabTestResultValueDTO convertToDTO(LabTestResultValue entity, LabTestResultValueDTO dto) {
         dto.setLabTestResultValueId(entity.getLabTestResultValueId());
-        dto.setLabTestResult(entity.getLabTestResult());
-        dto.setLabTestValue(entity.getLabTestValue());
+        dto.setLabTestResultId(entity.getLabTestResult().getLabTestResultId());
+        dto.setLabTestValueId(entity.getLabTestValue().getLabTestValueId());
         dto.setValue(entity.getValue());
         dto.setNorm(entity.isNorm());
         return dto;
@@ -18,8 +18,6 @@ public class LabTestResultValueConvertor implements Converter<LabTestResultValue
 
     @Override
     public LabTestResultValue convertToEntity(LabTestResultValueDTO dto, LabTestResultValue entity) {
-        entity.setLabTestResult(dto.getLabTestResult());
-        entity.setLabTestValue(dto.getLabTestValue());
         entity.setValue(dto.getValue());
         entity.setNorm(dto.isNorm());
         return entity;
