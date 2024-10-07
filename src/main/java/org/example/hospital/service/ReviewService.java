@@ -1,6 +1,6 @@
 package org.example.hospital.service;
 
-import org.example.hospital.convertors.ReviewConvertor;
+import org.example.hospital.converter.ReviewConverter;
 import org.example.hospital.dto.ReviewDTO;
 import org.example.hospital.entity.Review;
 import org.example.hospital.repository.ReviewRepository;
@@ -15,18 +15,18 @@ import java.util.NoSuchElementException;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final ReviewConvertor reviewConvertor;
+    private final ReviewConverter reviewConverter;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ReviewConvertor reviewConvertor) {
+    public ReviewService(ReviewRepository reviewRepository, ReviewConverter reviewConverter) {
         this.reviewRepository = reviewRepository;
-        this.reviewConvertor = reviewConvertor;
+        this.reviewConverter = reviewConverter;
     }
 
     @Transactional
     public void addReview(ReviewDTO reviewDTO)
     {
-        Review review = reviewConvertor.convertToEntity(reviewDTO, new Review());
+        Review review = reviewConverter.convertToEntity(reviewDTO, new Review());
         reviewRepository.save(review);
     }
 
@@ -36,7 +36,7 @@ public class ReviewService {
         {
             throw new NoSuchElementException("Not found Review with this id");
         }
-        return reviewConvertor.convertToDTO(reviewRepository.findById(id).get(), new ReviewDTO());
+        return reviewConverter.convertToDTO(reviewRepository.findById(id).get(), new ReviewDTO());
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class ReviewService {
             throw new NoSuchElementException("Not found Review with this id");
         }
         Review review = reviewRepository.findById(id).get();
-        review = reviewConvertor.convertToEntity(reviewDTO, review);
+        review = reviewConverter.convertToEntity(reviewDTO, review);
         reviewRepository.save(review);
     }
 
@@ -68,7 +68,7 @@ public class ReviewService {
         List<ReviewDTO> reviewDTOS = new ArrayList<>();
         for(Review review: reviews)
         {
-            ReviewDTO reviewDTO = reviewConvertor.convertToDTO(review, new ReviewDTO());
+            ReviewDTO reviewDTO = reviewConverter.convertToDTO(review, new ReviewDTO());
             reviewDTOS.add(reviewDTO);
 
         }

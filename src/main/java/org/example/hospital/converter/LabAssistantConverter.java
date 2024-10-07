@@ -1,11 +1,11 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.entity.LabAssistant;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LabAssistantConvertor implements Converter<LabAssistant, LabAssistantDTO> {
+public class LabAssistantConverter implements Converter<LabAssistant, LabAssistantDTO> {
     @Override
     public LabAssistantDTO convertToDTO(LabAssistant entity, LabAssistantDTO dto) {
         dto.setLabAssistantId(entity.getLabAssistantId());

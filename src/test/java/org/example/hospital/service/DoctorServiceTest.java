@@ -1,6 +1,6 @@
-package org.example.hospital.Services;
+package org.example.hospital.service;
 
-import org.example.hospital.convertors.DoctorConverter;
+import org.example.hospital.converter.DoctorConverter;
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.Department;
@@ -8,8 +8,6 @@ import org.example.hospital.entity.Doctor;
 import org.example.hospital.entity.User;
 import org.example.hospital.repository.DepartmentRepository;
 import org.example.hospital.repository.DoctorRepository;
-import org.example.hospital.service.DoctorService;
-import org.example.hospital.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -80,7 +78,7 @@ public class DoctorServiceTest {
 
         when(doctorConverter.convertToEntity(doctorDTO, new Doctor())).thenReturn(doctor);
         when(departmentRepository.findById(doctorDTO.getDepartmentId())).thenReturn(Optional.of(department));
-        when(userService.getUserByEmail(userDTO)).thenReturn(user);
+        when(userService.getUserByEmail(userDTO.getEmail())).thenReturn(user);
 
         doctorService.addDoctor(doctorDTO, userDTO);
 

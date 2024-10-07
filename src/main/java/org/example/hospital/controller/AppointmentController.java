@@ -1,9 +1,7 @@
 package org.example.hospital.controller;
 
-import org.example.hospital.convertors.AppointmentConvertor;
+import org.example.hospital.converter.AppointmentConverter;
 import org.example.hospital.dto.AppointmentDTO;
-import org.example.hospital.dto.DepartmentDTO;
-import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/appointment")
 public class AppointmentController {
     private final AppointmentService appointmentService;
-    private final AppointmentConvertor appointmentConvertor = new AppointmentConvertor();
+    private final AppointmentConverter appointmentConverter = new AppointmentConverter();
 
     @Autowired
     public AppointmentController(AppointmentService appointmentService) {

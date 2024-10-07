@@ -1,10 +1,8 @@
 package org.example.hospital.controller;
 
-import org.example.hospital.convertors.ReviewConvertor;
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.dto.PatientDTO;
 import org.example.hospital.dto.ReviewDTO;
-import org.example.hospital.repository.ReviewRepository;
 import org.example.hospital.service.ReviewService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,6 @@ import  org.hamcrest.Matchers;
 
 import java.util.NoSuchElementException;
 
-import static org.awaitility.Awaitility.given;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

@@ -1,7 +1,7 @@
 package org.example.hospital.service;
 
 
-import org.example.hospital.convertors.LabAssistantConvertor;
+import org.example.hospital.converter.LabAssistantConverter;
 import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.entity.LabAssistant;
 import org.example.hospital.repository.LabAssistantRepository;
@@ -16,18 +16,18 @@ import java.util.NoSuchElementException;
 @Service
 public class LabAssistantService {
     private final LabAssistantRepository labAssistantRepository;
-    private final LabAssistantConvertor labAssistantConvertor;
+    private final LabAssistantConverter labAssistantConverter;
 
     @Autowired
-    public LabAssistantService(LabAssistantRepository labAssistantRepository, LabAssistantConvertor labAssistantConvertor) {
+    public LabAssistantService(LabAssistantRepository labAssistantRepository, LabAssistantConverter labAssistantConverter) {
         this.labAssistantRepository = labAssistantRepository;
-        this.labAssistantConvertor = labAssistantConvertor;
+        this.labAssistantConverter = labAssistantConverter;
     }
 
     @Transactional
     public void addLabAssistant(LabAssistantDTO labAssistantDTO){
 
-        LabAssistant labAssistant = labAssistantConvertor.convertToEntity(labAssistantDTO, new LabAssistant());
+        LabAssistant labAssistant = labAssistantConverter.convertToEntity(labAssistantDTO, new LabAssistant());
 
         labAssistantRepository.save(labAssistant);
     }
@@ -36,7 +36,7 @@ public class LabAssistantService {
         if (labAssistantRepository.findById(id).isEmpty()){
             throw new NoSuchElementException("labAssistant not found with id: " + id);
         }
-        return labAssistantConvertor.convertToDTO(labAssistantRepository.findById(id).get(), new LabAssistantDTO());
+        return labAssistantConverter.convertToDTO(labAssistantRepository.findById(id).get(), new LabAssistantDTO());
     }
 
     @Transactional
@@ -46,7 +46,7 @@ public class LabAssistantService {
         }
         LabAssistant labAssistant = labAssistantRepository.findById(id).get();
 
-        labAssistant = labAssistantConvertor.convertToEntity(labAssistantDTO, labAssistant);
+        labAssistant = labAssistantConverter.convertToEntity(labAssistantDTO, labAssistant);
         labAssistantRepository.save(labAssistant);
     }
 
@@ -63,7 +63,7 @@ public class LabAssistantService {
         List<LabAssistantDTO> labAssistantDTOS = new ArrayList<>();
         for(LabAssistant labAssistant: labAssistants)
         {
-            LabAssistantDTO labAssistantDTO = labAssistantConvertor.convertToDTO(labAssistant, new LabAssistantDTO());
+            LabAssistantDTO labAssistantDTO = labAssistantConverter.convertToDTO(labAssistant, new LabAssistantDTO());
             labAssistantDTOS.add(labAssistantDTO);
         }
         return labAssistantDTOS;

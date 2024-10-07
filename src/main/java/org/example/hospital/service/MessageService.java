@@ -66,14 +66,14 @@ public class MessageService {
     }
 
 
-    public List<MessageDTO> getMessagesSentToUser(Long senderId, Long receiverId) {
+    public List<MessageDTO> getMessagesBetweenUsers(Long senderId, Long receiverId) {
         if (userService.getUserById(receiverId) == null) {
             throw new NoSuchElementException("User not found with id " + receiverId);
         }
 
-        List<Message> messages = messageRepository.findMessagesBySender_UserIdAndReceiver_UserId(senderId, receiverId);
+        List<Message> messages = messageRepository.findAllMessagesBetween(senderId, receiverId);
         if (messages.isEmpty()) {
-            throw new NoSuchElementException("Receiver with id " + receiverId + " has no received messages from sender with id " + senderId + ".");
+            throw new NoSuchElementException("No messages exchanged between sender with id " + senderId + " and receiver with id " + receiverId + ".");
         }
 
         List<MessageDTO> messageDTOS = new ArrayList<>();
@@ -86,7 +86,6 @@ public class MessageService {
             messageDTO.setTime(message.getTime());
             messageDTOS.add(messageDTO);
         }
-
         return messageDTOS;
     }
 }

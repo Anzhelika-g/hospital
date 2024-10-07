@@ -1,10 +1,8 @@
 package org.example.hospital.service;
 
-import org.aspectj.lang.annotation.AfterReturning;
-import org.example.hospital.convertors.AppointmentConvertor;
+import org.example.hospital.converter.AppointmentConverter;
 import org.example.hospital.dto.AppointmentDTO;
 import org.example.hospital.entity.Appointment;
-import org.example.hospital.entity.LabAssistant;
 import org.example.hospital.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +15,18 @@ import java.util.NoSuchElementException;
 @Service
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
-    private final AppointmentConvertor appointmentConvertor;
+    private final AppointmentConverter appointmentConverter;
 
     @Autowired
-    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentConvertor appointmentConvertor) {
+    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentConverter appointmentConverter) {
         this.appointmentRepository = appointmentRepository;
-        this.appointmentConvertor = appointmentConvertor;
+        this.appointmentConverter = appointmentConverter;
     }
 
     @Transactional
     public void addAppointment(AppointmentDTO appointmentDTO)
     {
-        Appointment appointment = appointmentConvertor.convertToEntity(appointmentDTO, new Appointment());
+        Appointment appointment = appointmentConverter.convertToEntity(appointmentDTO, new Appointment());
         appointmentRepository.save(appointment);
     }
 
@@ -38,7 +36,7 @@ public class AppointmentService {
         {
             throw new NoSuchElementException("Not found with id "+id);
         }
-        return appointmentConvertor.convertToDTO(appointmentRepository.findById(id).get(), new AppointmentDTO());
+        return appointmentConverter.convertToDTO(appointmentRepository.findById(id).get(), new AppointmentDTO());
 
     }
     @Transactional
@@ -49,7 +47,7 @@ public class AppointmentService {
             throw new NoSuchElementException("Not found with id "+id);
         }
         Appointment appointment = appointmentRepository.findById(id).get();
-        appointment = appointmentConvertor.convertToEntity(appointmentDTO, appointment);
+        appointment = appointmentConverter.convertToEntity(appointmentDTO, appointment);
         appointmentRepository.save(appointment);
     }
     @Transactional
@@ -65,7 +63,7 @@ public class AppointmentService {
         List<AppointmentDTO> appointmentDTOS = new ArrayList<>();
         for(Appointment appointment: appointments)
         {
-            AppointmentDTO appointmentDTO = appointmentConvertor.convertToDTO(appointment, new AppointmentDTO());
+            AppointmentDTO appointmentDTO = appointmentConverter.convertToDTO(appointment, new AppointmentDTO());
             appointmentDTOS.add(appointmentDTO);
 
         }

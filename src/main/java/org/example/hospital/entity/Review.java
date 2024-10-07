@@ -21,5 +21,5 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    private Doctor doctor; //ToDo:add Review in Doctor
+    private Doctor doctor;
 }

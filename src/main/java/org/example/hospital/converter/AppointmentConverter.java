@@ -1,11 +1,11 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 import org.example.hospital.dto.AppointmentDTO;
 import org.example.hospital.entity.Appointment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppointmentConvertor implements Converter<Appointment, AppointmentDTO> {
+public class AppointmentConverter implements Converter<Appointment, AppointmentDTO> {
     @Override
     public AppointmentDTO convertToDTO(Appointment entity, AppointmentDTO dto) {
         dto.setAppointmentId(entity.getAppointmentId());

@@ -1,19 +1,14 @@
 package org.example.hospital.controller;
 
 
-import jakarta.websocket.server.PathParam;
-import org.example.hospital.convertors.LabTestValueConvertor;
-import org.example.hospital.dto.LabTestDTO;
-import org.example.hospital.dto.LabTestResultValueDTO;
+import org.example.hospital.converter.LabTestValueConverter;
 import org.example.hospital.dto.LabTestValueDTO;
-import org.example.hospital.entity.LabTestValue;
 import org.example.hospital.service.LabTestValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -21,7 +16,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/labTest/{labTestId}/labTestValue")
 public class LabTestValueController {
     private final LabTestValueService labTestValueService;
-    private final LabTestValueConvertor labTestValueConvertor = new LabTestValueConvertor();
+    private final LabTestValueConverter labTestValueConverter = new LabTestValueConverter();
 
     @Autowired
     public LabTestValueController(LabTestValueService labTestValueService) {

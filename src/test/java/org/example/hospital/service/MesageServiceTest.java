@@ -1,4 +1,4 @@
-package org.example.hospital.Services;
+package org.example.hospital.service;
 
 import org.example.hospital.dto.MessageDTO;
 import org.example.hospital.entity.Message;
@@ -77,9 +77,9 @@ public class MesageServiceTest {
         messages.add(createMessage());
 
         when(userService.getUserById(2L)).thenReturn(new User());
-        when(messageRepository.findMessagesBySender_UserIdAndReceiver_UserId(1L, 2L)).thenReturn(messages);
+        when(messageRepository.findAllMessagesBetween (1L, 2L)).thenReturn(messages);
 
-        List<MessageDTO> result = messageService.getMessagesSentToUser(1L, 2L);
+        List<MessageDTO> result = messageService.getMessagesBetweenUsers (1L, 2L);
 
         assertNotNull(result);
         assertEquals("Test message", result.get(0).getContent());
@@ -88,7 +88,7 @@ public class MesageServiceTest {
     @Test
     public void getMessagesSentToUserNotFoundTest() {
         when(userService.getUserById(10L)).thenReturn(null);
-        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> messageService.getMessagesSentToUser(10L, 2L));
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> messageService.getMessagesBetweenUsers(10L, 2L));
         assertEquals("User not found with id 2", exception.getMessage());
     }
 }

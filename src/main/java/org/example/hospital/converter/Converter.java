@@ -1,4 +1,4 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 public interface Converter<E, D> {
 

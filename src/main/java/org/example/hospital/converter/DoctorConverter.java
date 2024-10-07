@@ -1,4 +1,4 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.entity.Doctor;

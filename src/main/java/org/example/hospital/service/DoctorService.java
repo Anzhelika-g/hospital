@@ -1,6 +1,6 @@
 package org.example.hospital.service;
 
-import org.example.hospital.convertors.DoctorConverter;
+import org.example.hospital.converter.DoctorConverter;
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.Department;
@@ -39,7 +39,7 @@ public class DoctorService {
         doctor.setDepartment(departmentRepository.findById(doctorDTO.getDepartmentId()).get());
 
         userService.addUser(userDTO);
-        User user = userService.getUserByEmail(userDTO);
+        User user = userService.getUserByEmail(userDTO.getEmail());
         doctor.setUser(user);
         doctorRepository.save(doctor);
     }
