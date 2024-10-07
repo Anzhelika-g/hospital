@@ -1,7 +1,7 @@
 package org.example.hospital.service;
 
 
-import org.example.hospital.convertors.LabTestConvertor;
+import org.example.hospital.converter.LabTestConverter;
 import org.example.hospital.dto.LabTestDTO;
 import org.example.hospital.entity.LabTest;
 import org.example.hospital.repository.LabTestRepository;
@@ -16,18 +16,18 @@ import java.util.NoSuchElementException;
 @Service
 public class LabTestService {
     private final LabTestRepository labTestRepository;
-    private final LabTestConvertor labTestConvertor;
+    private final LabTestConverter labTestConverter;
 
     @Autowired
-    public LabTestService(LabTestRepository labTestRepository, LabTestConvertor labTestConvertor) {
+    public LabTestService(LabTestRepository labTestRepository, LabTestConverter labTestConverter) {
         this.labTestRepository = labTestRepository;
-        this.labTestConvertor = labTestConvertor;
+        this.labTestConverter = labTestConverter;
     }
 
     @Transactional
     public void addLabTest(LabTestDTO labTestDTO)
     {
-        LabTest labTest = labTestConvertor.convertToEntity(labTestDTO, new LabTest());
+        LabTest labTest = labTestConverter.convertToEntity(labTestDTO, new LabTest());
 
         labTestRepository.save(labTest);
     }
@@ -37,7 +37,7 @@ public class LabTestService {
         {
             throw new NoSuchElementException("Lab test not found");
         }
-        return labTestConvertor.convertToDTO(labTestRepository.findById(id).get(), new LabTestDTO());
+        return labTestConverter.convertToDTO(labTestRepository.findById(id).get(), new LabTestDTO());
     }
 
     @Transactional
@@ -49,7 +49,7 @@ public class LabTestService {
         }
         LabTest labTest = labTestRepository.findById(labTestId).get();
 
-        labTest = labTestConvertor.convertToEntity(labTestDTO, labTest);
+        labTest = labTestConverter.convertToEntity(labTestDTO, labTest);
 
         labTestRepository.save(labTest);
     }
@@ -69,7 +69,7 @@ public class LabTestService {
         List<LabTestDTO> labTestDTOS = new ArrayList<>();
         for(LabTest labTest: labTests)
         {
-            LabTestDTO labTestDTO = labTestConvertor.convertToDTO(labTest, new LabTestDTO());
+            LabTestDTO labTestDTO = labTestConverter.convertToDTO(labTest, new LabTestDTO());
             labTestDTOS.add(labTestDTO);
         }
         return labTestDTOS;

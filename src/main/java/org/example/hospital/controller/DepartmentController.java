@@ -78,9 +78,26 @@ public class DepartmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-//    @RequestMapping(value = "/{departmentId}/doctor/{doctorId}/review", method = RequestMethod.POST)
-//    public ResponseEntity<String> addReview(@RequestBody ReviewDTO reviewDTO)
-//    {
-//
-//    }
+
+    @RequestMapping(value = "/{departmentId}/doctor/{doctorId}/review", method = RequestMethod.GET)
+    public ResponseEntity<List<ReviewDTO>> getReviewsByDoctorIdInDepartment(@PathVariable Long doctorId, @PathVariable Long departmentId){
+        try {
+            List<ReviewDTO> reviewDTOS = departmentService.getReviewsByDoctorIdInDepartment(doctorId, departmentId);
+            return  new ResponseEntity<>(reviewDTOS, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/{departmentId}/doctor/{doctorId}/review", method = RequestMethod.POST)
+    public ResponseEntity<String> addReviewToDoctorInDepartment(@PathVariable Long departmentId, @PathVariable Long doctorId, @RequestBody ReviewDTO reviewDTO){
+        try {
+            departmentService.addReviewToDoctorInDepartment(doctorId, departmentId, reviewDTO);
+            return new ResponseEntity<>("Review added.", HttpStatus.OK);
+        }
+        catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

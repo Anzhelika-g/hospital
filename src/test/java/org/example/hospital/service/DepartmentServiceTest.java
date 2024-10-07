@@ -1,13 +1,12 @@
-package org.example.hospital.Services;
+package org.example.hospital.service;
 
-import org.example.hospital.convertors.DepartmentConverter;
-import org.example.hospital.convertors.DoctorConverter;
+import org.example.hospital.converter.DepartmentConverter;
+import org.example.hospital.converter.DoctorConverter;
 import org.example.hospital.dto.DepartmentDTO;
 import org.example.hospital.dto.DoctorDTO;
 import org.example.hospital.entity.Department;
 import org.example.hospital.entity.Doctor;
 import org.example.hospital.repository.DepartmentRepository;
-import org.example.hospital.service.DepartmentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

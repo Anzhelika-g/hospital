@@ -1,7 +1,7 @@
 
 package org.example.hospital.service;
 
-        import org.example.hospital.convertors.AppointmentConvertor;
+        import org.example.hospital.converter.AppointmentConverter;
         import org.example.hospital.dto.AppointmentDTO;
         import org.example.hospital.entity.Appointment;
         import org.example.hospital.repository.AppointmentRepository;
@@ -29,7 +29,7 @@ public class AppointmentServiceTest {
     private AppointmentRepository appointmentRepository;
 
     @Mock
-    private AppointmentConvertor appointmentConvertor;
+    private AppointmentConverter appointmentConverter;
 
     private Appointment appointment;
     private AppointmentDTO appointmentDTO;
@@ -47,7 +47,7 @@ public class AppointmentServiceTest {
 
     @Test
     public void testAddAppointment() {
-        when(appointmentConvertor.convertToEntity(any(AppointmentDTO.class), any(Appointment.class))).thenReturn(appointment);
+        when(appointmentConverter.convertToEntity(any(AppointmentDTO.class), any(Appointment.class))).thenReturn(appointment);
 
         appointmentService.addAppointment(appointmentDTO);
 
@@ -57,7 +57,7 @@ public class AppointmentServiceTest {
     @Test
     public void testGetAppointment_Success() {
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
-        when(appointmentConvertor.convertToDTO(any(Appointment.class), any(AppointmentDTO.class))).thenReturn(appointmentDTO);
+        when(appointmentConverter.convertToDTO(any(Appointment.class), any(AppointmentDTO.class))).thenReturn(appointmentDTO);
 
         AppointmentDTO result = appointmentService.getAppointment(1L);
 
@@ -77,7 +77,7 @@ public class AppointmentServiceTest {
     @Test
     public void testUpdateAppointment_Success() {
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
-        when(appointmentConvertor.convertToEntity(any(AppointmentDTO.class), any(Appointment.class))).thenReturn(appointment);
+        when(appointmentConverter.convertToEntity(any(AppointmentDTO.class), any(Appointment.class))).thenReturn(appointment);
 
         appointmentService.updateAppointment(1L, appointmentDTO);
 
@@ -117,7 +117,7 @@ public class AppointmentServiceTest {
         appointments.add(appointment);
 
         when(appointmentRepository.findAll()).thenReturn(appointments);
-        when(appointmentConvertor.convertToDTO(any(Appointment.class), any(AppointmentDTO.class))).thenReturn(appointmentDTO);
+        when(appointmentConverter.convertToDTO(any(Appointment.class), any(AppointmentDTO.class))).thenReturn(appointmentDTO);
 
         List<AppointmentDTO> result = appointmentService.getAllAppointments();
 

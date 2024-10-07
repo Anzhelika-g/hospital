@@ -1,15 +1,13 @@
 package org.example.hospital.controller;
 
-import org.example.hospital.convertors.LabAssistantConvertor;
+import org.example.hospital.converter.LabAssistantConverter;
 import org.example.hospital.dto.LabAssistantDTO;
-import org.example.hospital.entity.LabAssistant;
 import org.example.hospital.service.LabAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,7 +15,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/labAssistant")
 public class LabAssistantController {
     private final LabAssistantService labAssistantService;
-    private final LabAssistantConvertor labAssistantConvertor = new LabAssistantConvertor();
+    private final LabAssistantConverter labAssistantConverter = new LabAssistantConverter();
 
 
     @Autowired

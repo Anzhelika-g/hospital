@@ -1,8 +1,7 @@
 package org.example.hospital.service;
 
 
-import org.example.hospital.convertors.LabTestValueConvertor;
-import org.example.hospital.dto.LabTestDTO;
+import org.example.hospital.converter.LabTestValueConverter;
 import org.example.hospital.dto.LabTestValueDTO;
 import org.example.hospital.entity.LabTest;
 import org.example.hospital.entity.LabTestValue;
@@ -19,13 +18,13 @@ import java.util.NoSuchElementException;
 @Service
 public class LabTestValueService {
     private final LabTestValueRepository labTestValueRepository;
-    private final LabTestValueConvertor labTestValueConvertor;
+    private final LabTestValueConverter labTestValueConverter;
     private final LabTestRepository labTestRepository;
 
     @Autowired
-    public LabTestValueService(LabTestValueRepository labTestValueRepository, LabTestValueConvertor labTestValueConvertor, LabTestRepository labTestRepository) {
+    public LabTestValueService(LabTestValueRepository labTestValueRepository, LabTestValueConverter labTestValueConverter, LabTestRepository labTestRepository) {
         this.labTestValueRepository = labTestValueRepository;
-        this.labTestValueConvertor = labTestValueConvertor;
+        this.labTestValueConverter = labTestValueConverter;
         this.labTestRepository = labTestRepository;
     }
 
@@ -33,7 +32,7 @@ public class LabTestValueService {
     public void addLabTestValue(LabTestValueDTO labTestValueDTO, Long labTestId)
     {
 
-        LabTestValue labTestValue = labTestValueConvertor.convertToEntity(labTestValueDTO, new LabTestValue());
+        LabTestValue labTestValue = labTestValueConverter.convertToEntity(labTestValueDTO, new LabTestValue());
         LabTest labTest = labTestRepository.getReferenceById(labTestId);
         labTestValue.setLabTest(labTest);
 
@@ -46,7 +45,7 @@ public class LabTestValueService {
         {
             throw new NoSuchElementException("Lab test value not found");
         }
-        return labTestValueConvertor.convertToDTO(labTestValueRepository.findById(id).get(), new LabTestValueDTO());
+        return labTestValueConverter.convertToDTO(labTestValueRepository.findById(id).get(), new LabTestValueDTO());
     }
 
     @Transactional
@@ -58,7 +57,7 @@ public class LabTestValueService {
         }
         LabTestValue labTestValue = labTestValueRepository.findById(id).get();
 
-        labTestValue = labTestValueConvertor.convertToEntity(labTestValueDTO, labTestValue);
+        labTestValue = labTestValueConverter.convertToEntity(labTestValueDTO, labTestValue);
 
         labTestValueRepository.save(labTestValue);
     }
@@ -77,7 +76,7 @@ public class LabTestValueService {
         List<LabTestValueDTO> labTestValueDTOS = new ArrayList<>();
         for(LabTestValue labTestValue: labTestValues)
         {
-            labTestValueDTOS.add(labTestValueConvertor.convertToDTO(labTestValue, new LabTestValueDTO()));
+            labTestValueDTOS.add(labTestValueConverter.convertToDTO(labTestValue, new LabTestValueDTO()));
         }
 
         return labTestValueDTOS;

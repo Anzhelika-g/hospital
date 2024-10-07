@@ -1,4 +1,4 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 import org.example.hospital.dto.LabTestResultDTO;
 import org.example.hospital.dto.LabTestResultValueDTO;
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class LabTestResultConvertor implements Converter<LabTestResult, LabTestResultDTO>
+public class LabTestResultConverter implements Converter<LabTestResult, LabTestResultDTO>
 {
     @Autowired
-    private LabTestResultValueConvertor labTestResultValueConvertor;
+    private LabTestResultValueConverter labTestResultValueConverter;
     @Override
     public LabTestResultDTO convertToDTO(LabTestResult entity, LabTestResultDTO dto) {
         dto.setLabTestResultId(entity.getLabTestResultId());
@@ -25,7 +25,7 @@ public class LabTestResultConvertor implements Converter<LabTestResult, LabTestR
         List<LabTestResultValueDTO> labTestResultValueDTOS = new ArrayList<>();
         for(LabTestResultValue labTestResultValue: entity.getLabTestResultValues())
         {
-            labTestResultValueDTOS.add(labTestResultValueConvertor.convertToDTO(labTestResultValue,new LabTestResultValueDTO()));
+            labTestResultValueDTOS.add(labTestResultValueConverter.convertToDTO(labTestResultValue,new LabTestResultValueDTO()));
         }
         return dto;
     }
@@ -35,7 +35,7 @@ public class LabTestResultConvertor implements Converter<LabTestResult, LabTestR
 
         List<LabTestResultValue> labTestResultValues = new ArrayList<>();
         for (LabTestResultValueDTO labTestResultValueDTO : dto.getLabTestResultValues()) {
-            labTestResultValues.add(labTestResultValueConvertor.convertToEntity(labTestResultValueDTO, new LabTestResultValue()));
+            labTestResultValues.add(labTestResultValueConverter.convertToEntity(labTestResultValueDTO, new LabTestResultValue()));
         }
         return entity;
     }

@@ -2,8 +2,7 @@ package org.example.hospital.service;
 
 
 import jakarta.transaction.Transactional;
-import org.example.hospital.convertors.PatientConverter;
-import org.example.hospital.dto.DoctorDTO;
+import org.example.hospital.converter.PatientConverter;
 import org.example.hospital.dto.PatientDTO;
 import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.Doctor;
@@ -38,7 +37,7 @@ public class PatientService {
         Patient patient = patientConverter.convertToEntity(patientDTO, new Patient());
 
         userService.addUser(userDTO);
-        User user = userService.getUserByEmail(userDTO);
+        User user = userService.getUserByEmail(userDTO.getEmail());
         patient.setUser(user);
         patientRepository.save(patient);
     }

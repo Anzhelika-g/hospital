@@ -1,11 +1,11 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 import org.example.hospital.dto.ReviewDTO;
 import org.example.hospital.entity.Review;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReviewConvertor implements Converter<Review, ReviewDTO>{
+public class ReviewConverter implements Converter<Review, ReviewDTO>{
     @Override
     public ReviewDTO convertToDTO(Review entity, ReviewDTO dto) {
         dto.setReviewId(entity.getReviewId());

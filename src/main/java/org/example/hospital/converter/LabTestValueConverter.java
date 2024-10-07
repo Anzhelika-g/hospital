@@ -1,11 +1,11 @@
-package org.example.hospital.convertors;
+package org.example.hospital.converter;
 
 import org.example.hospital.dto.LabTestValueDTO;
 import org.example.hospital.entity.LabTestValue;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LabTestValueConvertor implements Converter<LabTestValue, LabTestValueDTO>{
+public class LabTestValueConverter implements Converter<LabTestValue, LabTestValueDTO>{
     @Override
     public LabTestValueDTO convertToDTO(LabTestValue entity, LabTestValueDTO dto) {
         dto.setLabTestValueId(entity.getLabTestValueId());

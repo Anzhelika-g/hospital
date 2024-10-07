@@ -1,6 +1,6 @@
 package org.example.hospital.controller;
 
-import org.example.hospital.convertors.ReviewConvertor;
+import org.example.hospital.converter.ReviewConverter;
 import org.example.hospital.dto.ReviewDTO;
 import org.example.hospital.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/review")
 public class ReviewController {
     private final ReviewService reviewService;
-    private final ReviewConvertor reviewConvertor = new ReviewConvertor();
+    private final ReviewConverter reviewConverter = new ReviewConverter();
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;

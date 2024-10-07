@@ -1,12 +1,10 @@
 package org.example.hospital.controller;
 
 
-import org.example.hospital.convertors.LabTestConvertor;
-import org.example.hospital.convertors.LabTestResultConvertor;
+import org.example.hospital.converter.LabTestConverter;
 import org.example.hospital.dto.LabTestDTO;
 import org.example.hospital.dto.LabTestResultDTO;
 import org.example.hospital.entity.LabTest;
-import org.example.hospital.entity.LabTestResult;
 import org.example.hospital.service.LabTestResultService;
 import org.example.hospital.service.LabTestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.NumberUpSupported;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,7 +19,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/labTest")
 public class LabTestController {
     private final LabTestService labTestService;
-    private LabTestConvertor labTestConvertor = new LabTestConvertor();
+    private LabTestConverter labTestConverter = new LabTestConverter();
     private final LabTestResultService labTestResultService;
     @Autowired
     public LabTestController(LabTestService labTestService, LabTestResultService labTestResultService) {
@@ -88,7 +84,7 @@ public class LabTestController {
     public ResponseEntity<String> createLabTestResult(@RequestBody LabTestResultDTO labTestResultDTO, @PathVariable Long labTestId)
     {
         try {
-            labTestResultService.addLabTestResult(labTestResultDTO, labTestConvertor.convertToEntity(labTestService.getLabTest(labTestId), new LabTest()));
+            labTestResultService.addLabTestResult(labTestResultDTO, labTestConverter.convertToEntity(labTestService.getLabTest(labTestId), new LabTest()));
             return new ResponseEntity<>("Lab test result created", HttpStatus.CREATED);
         }catch (NoSuchElementException e)
         {
