@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import  org.hamcrest.Matchers;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -51,7 +53,7 @@ public class ReviewControllerTest {
     public void getReview_Success() throws Exception
     {
             BDDMockito.given(reviewService.getReview(1L)).willReturn(reviewDTO);
-            mockMvc.perform(get("review/{reviewId}", 1L))
+            mockMvc.perform(get("/review/{reviewId}", 1L))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.reviewId", Matchers.is(1)))
                     .andExpect(jsonPath("$.rating", Matchers.is(10)))
@@ -63,8 +65,21 @@ public class ReviewControllerTest {
     public void getReview_NotFount() throws Exception
     {
         BDDMockito.given(reviewService.getReview(anyLong())).willThrow(new NoSuchElementException());
-        mockMvc.perform(get("review/{reviewId}", 1L))
+        mockMvc.perform(get("/review/{reviewId}", 1L))
                 .andExpect(status().isNotFound());
+    }
+    @Test
+    public void getAllReview_Success() throws Exception
+    {
+        List<ReviewDTO> reviewDTOList = new ArrayList<>();
+        BDDMockito.given(reviewService.getAllReviews()).willReturn(reviewDTOList);
+        mockMvc.perform(get("/review/list"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].reviewId", Matchers.is(1L)))
+                .andExpect(jsonPath("$[0].doctorDTO.doctorId", Matchers.is(1L)))
+                .andExpect(jsonPath("$[0].patientDTO.patientId", Matchers.is(1L)))
+                .andExpect(jsonPath("$[0].feedback", Matchers.is("Good")))
+                .andExpect(jsonPath("$[0].rating", Matchers.is(10)));
     }
 
 }

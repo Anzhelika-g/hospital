@@ -3,6 +3,7 @@ package org.example.hospital.controller;
 import org.example.hospital.converter.LabAssistantConverter;
 import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.request.LabAssistantUserRequest;
+import org.example.hospital.request.PatientUserRequest;
 import org.example.hospital.service.LabAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
