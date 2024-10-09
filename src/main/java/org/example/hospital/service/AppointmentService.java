@@ -1,9 +1,11 @@
 package org.example.hospital.service;
 
 import org.example.hospital.converter.AppointmentConverter;
+
 import org.example.hospital.dto.AppointmentDTO;
 import org.example.hospital.entity.Appointment;
 import org.example.hospital.repository.AppointmentRepository;
+import org.example.hospital.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +18,20 @@ import java.util.NoSuchElementException;
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentConverter appointmentConverter;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentConverter appointmentConverter) {
+    public AppointmentService(AppointmentRepository appointmentRepository, AppointmentConverter appointmentConverter, PatientRepository patientRepository) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentConverter = appointmentConverter;
+        this.patientRepository = patientRepository;
     }
 
     @Transactional
-    public void addAppointment(AppointmentDTO appointmentDTO)
+    public void addAppointment(AppointmentDTO appointmentDTO, Long patientId)
     {
         Appointment appointment = appointmentConverter.convertToEntity(appointmentDTO, new Appointment());
+        appointment.setPatient(patientRepository.getReferenceById(patientId));
         appointmentRepository.save(appointment);
     }
 

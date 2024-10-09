@@ -44,12 +44,12 @@ public class AppointmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<String> addAppointment(@RequestBody AppointmentDTO appointmentDTO)
-    {
-        appointmentService.addAppointment(appointmentDTO);
-        return new ResponseEntity<>("Appointment Created", HttpStatus.CREATED);
-    }
+//    @RequestMapping(value = "/add", method = RequestMethod.POST)
+//    public ResponseEntity<String> addAppointment(@RequestBody AppointmentDTO appointmentDTO)
+//    {
+//        appointmentService.addAppointment(appointmentDTO, );
+//        return new ResponseEntity<>("Appointment Created", HttpStatus.CREATED);
+//    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<AppointmentDTO>>getAllAppointments()

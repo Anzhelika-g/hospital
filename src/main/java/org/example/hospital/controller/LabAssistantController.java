@@ -2,6 +2,8 @@ package org.example.hospital.controller;
 
 import org.example.hospital.converter.LabAssistantConverter;
 import org.example.hospital.dto.LabAssistantDTO;
+import org.example.hospital.request.LabAssistantUserRequest;
+import org.example.hospital.request.PatientUserRequest;
 import org.example.hospital.service.LabAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,10 +62,10 @@ public class LabAssistantController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<String> addLabAssistant(@RequestBody LabAssistantDTO labAssistantDTO)
+    public ResponseEntity<String> addLabAssistant(@RequestBody LabAssistantUserRequest labAssistantUserRequest)
     {
         try {
-            labAssistantService.addLabAssistant(labAssistantDTO);
+            labAssistantService.addLabAssistant(labAssistantUserRequest.getLabAssistantDTO(), labAssistantUserRequest.getUserDTO());
             return new ResponseEntity<>("Lab assistant added",HttpStatus.CREATED);
         }catch (NoSuchElementException e)
         {

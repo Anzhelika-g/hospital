@@ -95,16 +95,16 @@ public class AppointmentControllerTest {
         mockMvc.perform(delete("/appointment/{appointmentId}", 1L))
                 .andExpect(status().isNotFound());
     }
-    @Test
-    public void testAddAppointment_Success() throws Exception {
-        mockMvc.perform(post("/appointment/add")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"doctorDTO\":{\"doctorId\":1,\"doctorName\":\"Dr. Adamyan\"},"
-                                + "\"patientDTO\":{\"patientId\":1,\"patientName\":\"Armen\"},"
-                                + "\"time\":\"2024-10-02T14:00:00\",\"duration\":30,\"symptoms\":\"Headache\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(content().string("Appointment Created"));
-    }
+//    @Test
+//    public void testAddAppointment_Success() throws Exception {
+//        mockMvc.perform(post("/appointment/add")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content("{\"doctorDTO\":{\"doctorId\":1,\"doctorName\":\"Dr. Adamyan\"},"
+//                                + "\"patientDTO\":{\"patientId\":1,\"patientName\":\"Armen\"},"
+//                                + "\"time\":\"2024-10-02T14:00:00\",\"duration\":30,\"symptoms\":\"Headache\"}"))
+//                .andExpect(status().isCreated())
+//                .andExpect(content().string("Appointment Created"));
+//    }
 
     @Test
     public void testGetAllAppointments_Success() throws Exception {

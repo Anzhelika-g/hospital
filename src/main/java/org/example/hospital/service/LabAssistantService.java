@@ -3,7 +3,9 @@ package org.example.hospital.service;
 
 import org.example.hospital.converter.LabAssistantConverter;
 import org.example.hospital.dto.LabAssistantDTO;
+import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.LabAssistant;
+import org.example.hospital.entity.User;
 import org.example.hospital.repository.LabAssistantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +19,22 @@ import java.util.NoSuchElementException;
 public class LabAssistantService {
     private final LabAssistantRepository labAssistantRepository;
     private final LabAssistantConverter labAssistantConverter;
+    private  final UserService userService;
 
     @Autowired
-    public LabAssistantService(LabAssistantRepository labAssistantRepository, LabAssistantConverter labAssistantConverter) {
+    public LabAssistantService(LabAssistantRepository labAssistantRepository, LabAssistantConverter labAssistantConverter, UserService userService) {
         this.labAssistantRepository = labAssistantRepository;
         this.labAssistantConverter = labAssistantConverter;
+        this.userService = userService;
     }
 
     @Transactional
-    public void addLabAssistant(LabAssistantDTO labAssistantDTO){
+    public void addLabAssistant(LabAssistantDTO labAssistantDTO, UserDTO userDTO){
 
         LabAssistant labAssistant = labAssistantConverter.convertToEntity(labAssistantDTO, new LabAssistant());
-
+        userService.addUser(userDTO);
+        User user = userService.getUserByEmail(userDTO.getEmail());
+        labAssistant.setUser(user);
         labAssistantRepository.save(labAssistant);
     }
 
