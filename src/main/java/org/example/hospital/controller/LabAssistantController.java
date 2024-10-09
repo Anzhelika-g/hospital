@@ -20,9 +20,11 @@ public class LabAssistantController {
     private final LabAssistantConverter labAssistantConverter = new LabAssistantConverter();
 
 
+
     @Autowired
     public LabAssistantController(LabAssistantService labAssistantService) {
         this.labAssistantService = labAssistantService;
+
     }
 
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.GET)
@@ -79,24 +81,3 @@ public class LabAssistantController {
         return new ResponseEntity<>(labAssistantDTOS, HttpStatus.OK);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

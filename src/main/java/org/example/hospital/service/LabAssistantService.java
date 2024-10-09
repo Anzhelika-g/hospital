@@ -30,7 +30,6 @@ public class LabAssistantService {
 
     @Transactional
     public void addLabAssistant(LabAssistantDTO labAssistantDTO, UserDTO userDTO){
-
         LabAssistant labAssistant = labAssistantConverter.convertToEntity(labAssistantDTO, new LabAssistant());
         userService.addUser(userDTO);
         User user = userService.getUserByEmail(userDTO.getEmail());
