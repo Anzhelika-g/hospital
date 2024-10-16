@@ -107,13 +107,13 @@ public class DoctorController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/appointment/{appointmentId}/cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/appointment/{appointmentId}/cancel", method = RequestMethod.DELETE)
     public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId){
         bookingService.cancelBooking(appointmentId);
         return new ResponseEntity<>("Appointment canceled", HttpStatus.OK);
     }  //for patient?
 
-    @RequestMapping(value = "/appointment/{appointmentId}/reschedule", method = RequestMethod.POST)
+    @RequestMapping(value = "/appointment/{appointmentId}/reschedule", method = RequestMethod.PUT)
     public ResponseEntity<String> rescheduleAppointment(@PathVariable Long appointmentId, @RequestBody BookingDTO bookingDTO){
         bookingService.rescheduleBooking(appointmentId, bookingDTO);
         return new ResponseEntity<>("Appointment rescheduled.", HttpStatus.OK);
