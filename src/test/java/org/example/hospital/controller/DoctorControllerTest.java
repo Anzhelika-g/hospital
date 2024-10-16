@@ -63,7 +63,7 @@ public class DoctorControllerTest {
         DoctorUserRequest doctorUserRequest = new DoctorUserRequest();
         DoctorDTO doctorDTO = new DoctorDTO();
         doctorDTO.setName("aaa");
-        doctorDTO.setDepartmentId(3L); // Ensure this matches what you want to test
+        doctorDTO.setDepartmentId(3L);
 
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail("aa@gmail.com");
