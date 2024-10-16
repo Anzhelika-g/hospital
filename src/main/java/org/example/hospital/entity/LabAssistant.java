@@ -23,8 +23,8 @@ public class LabAssistant {
     @OneToMany
     private List<Patient> patients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "labAssistant")
-    private List<Schedule> schedule = new ArrayList<>();
+//    @OneToMany(mappedBy = "labAssistant")
+//    private List<Schedule> schedule = new ArrayList<>();
 
     @Column(name = "test_name")
     private String testName;

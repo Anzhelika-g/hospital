@@ -5,19 +5,25 @@ import lombok.Data;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "schedule")
-public class Schedule {
+@Table(name = "booking")
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
-    private Long scheduleId;
+    @Column(name = "booking_id")
+    private Long bookingId;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
 
     @Column(name = "start_time")
@@ -25,8 +31,4 @@ public class Schedule {
 
     @Column(name = "end_time")
     private LocalTime endTime;
-
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
 }
