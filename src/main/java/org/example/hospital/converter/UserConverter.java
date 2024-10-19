@@ -10,6 +10,7 @@ public class UserConverter implements Converter<User, UserDTO>{
     public UserDTO convertToDTO(User entity, UserDTO dto) {
         dto.setUserId(entity.getUserId());
         dto.setEmail(entity.getEmail());
+        dto.setEmail(entity.getUsername());
         dto.setPassword(entity.getPassword());
         dto.setRole(entity.getRole());
         return dto;
@@ -17,7 +18,9 @@ public class UserConverter implements Converter<User, UserDTO>{
 
     @Override
     public User convertToEntity(UserDTO dto, User entity) {
+        entity.setUserId(dto.getUserId());
         entity.setEmail(dto.getEmail());
+        entity.setUsername(dto.getUsername());
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
         return entity;

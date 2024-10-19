@@ -5,6 +5,7 @@ import org.example.hospital.dto.UserDTO;
 import org.example.hospital.entity.User;
 import org.example.hospital.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,9 @@ public class UserService {
     private final UserConverter userConverter;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     public UserService(UserRepository userRepository, UserConverter userConverter) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
@@ -23,7 +27,15 @@ public class UserService {
 
     @Transactional
     public void addUser(UserDTO userDTO){
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username is already in use");
+        }
+        if (userDTO.getUsername() == null) {
+            throw new RuntimeException("Username must be specified");
+        }
         User user = userConverter.convertToEntity(userDTO, new User());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
         userRepository.save(user);
     }
 
@@ -52,8 +64,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User getUserByEmail(String email){
-        return userRepository.findByEmail(email).get();
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username).get();
     }
 
     public User getUserReferenceById(Long id) {

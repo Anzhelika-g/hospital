@@ -3,11 +3,11 @@ package org.example.hospital.controller;
 import org.example.hospital.converter.LabAssistantConverter;
 import org.example.hospital.dto.LabAssistantDTO;
 import org.example.hospital.request.LabAssistantUserRequest;
-import org.example.hospital.request.PatientUserRequest;
 import org.example.hospital.service.LabAssistantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +19,9 @@ public class LabAssistantController {
     private final LabAssistantService labAssistantService;
     private final LabAssistantConverter labAssistantConverter = new LabAssistantConverter();
 
-
-
     @Autowired
     public LabAssistantController(LabAssistantService labAssistantService) {
         this.labAssistantService = labAssistantService;
-
     }
 
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.GET)
@@ -38,6 +35,8 @@ public class LabAssistantController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteLabAssistant(@PathVariable Long labAssistantId)
     {
@@ -51,6 +50,7 @@ public class LabAssistantController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{labAssistantId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateLabAssistant(@PathVariable Long labAssistantId, @RequestBody LabAssistantDTO labAssistantDTO)
     {
@@ -63,17 +63,20 @@ public class LabAssistantController {
         }
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> addLabAssistant(@RequestBody LabAssistantUserRequest labAssistantUserRequest)
     {
         try {
             labAssistantService.addLabAssistant(labAssistantUserRequest.getLabAssistantDTO(), labAssistantUserRequest.getUserDTO());
-            return new ResponseEntity<>("Lab assistant added",HttpStatus.CREATED);
+            return new ResponseEntity<>("User registered successfully",HttpStatus.CREATED);
         }catch (NoSuchElementException e)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<LabAssistantDTO>> getAllLabAssistants()
     {

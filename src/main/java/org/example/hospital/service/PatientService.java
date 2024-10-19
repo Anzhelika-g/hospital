@@ -37,7 +37,7 @@ public class PatientService {
         Patient patient = patientConverter.convertToEntity(patientDTO, new Patient());
 
         userService.addUser(userDTO);
-        User user = userService.getUserByEmail(userDTO.getEmail());
+        User user = userService.getUserByUsername(userDTO.getUsername());
         patient.setUser(user);
         patientRepository.save(patient);
     }

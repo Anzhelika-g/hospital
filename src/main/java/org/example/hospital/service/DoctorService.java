@@ -39,7 +39,7 @@ public class DoctorService {
         doctor.setDepartment(departmentRepository.findById(doctorDTO.getDepartmentId()).get());
 
         userService.addUser(userDTO);
-        User user = userService.getUserByEmail(userDTO.getEmail());
+        User user = userService.getUserByUsername(userDTO.getUsername());
         doctor.setUser(user);
         doctorRepository.save(doctor);
     }

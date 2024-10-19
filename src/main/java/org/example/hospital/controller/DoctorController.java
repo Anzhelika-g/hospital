@@ -12,6 +12,7 @@ import org.example.hospital.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
@@ -47,6 +48,7 @@ public class DoctorController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{doctorId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> removeDepartment(@PathVariable Long doctorId){
         try {
@@ -58,6 +60,7 @@ public class DoctorController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{doctorId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateDoctor(@PathVariable Long doctorId, @RequestBody DoctorDTO doctorDTO){
         try {
@@ -69,18 +72,21 @@ public class DoctorController {
         }
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<String> addDoctor(@RequestBody DoctorUserRequest doctorUserRequest) {
         doctorService.addDoctor(doctorUserRequest.getDoctorDTO(), doctorUserRequest.getUserDTO());
-        return new ResponseEntity<>("Doctor added.", HttpStatus.CREATED);
+        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @RequestMapping(value = "/{doctorId}/schedule", method = RequestMethod.GET)
     public ResponseEntity<Map<DayOfWeek, List<AvailableSlotDTO>>> getWeeklyAvailableHours(@PathVariable Long doctorId, @RequestParam LocalDate startDate){
         Map<DayOfWeek, List<AvailableSlotDTO>> weeklySlots = scheduleService.getWeeklyAvailableSlots(doctorId, startDate);
         return new ResponseEntity<>(weeklySlots, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @RequestMapping(value = "/{doctorId}/schedule/weekDay/{dayOfWeek}", method = RequestMethod.GET)
     public ResponseEntity<List<AvailableSlotDTO>> getAvailableSlots(@PathVariable Long doctorId,
                                                                     @PathVariable DayOfWeek dayOfWeek) {
@@ -88,31 +94,35 @@ public class DoctorController {
         return new ResponseEntity<>(availableSlots, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @RequestMapping(value = "/add/schedule", method = RequestMethod.POST)
     public ResponseEntity<String> addAvailability(@RequestBody AvailabilityRequest availabilityRequest) {
         scheduleService.addAvailability(availabilityRequest);
         return new ResponseEntity<>("Hours added successfully.", HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @RequestMapping(value = "/{doctorId}/appoint", method = RequestMethod.POST)
     public ResponseEntity<String> bookAppointment(@PathVariable Long doctorId, @RequestBody BookingDTO bookingDTO){
         bookingService.addBooking(doctorId, bookingDTO);
         return new ResponseEntity<>("Successfully booked.", HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/appointment/list", method = RequestMethod.GET)
-    public ResponseEntity<List<BookingDTO>> getAllBookings(){
-        Long doctorId = 1L;
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    @RequestMapping(value = "{doctorId}/appointment/list", method = RequestMethod.GET)
+    public ResponseEntity<List<BookingDTO>> getAllBookings(@PathVariable Long doctorId){
         List<BookingDTO> list = bookingService.listBookingsByDoctor(doctorId);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
     @RequestMapping(value = "/appointment/{appointmentId}/cancel", method = RequestMethod.DELETE)
     public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId){
         bookingService.cancelBooking(appointmentId);
         return new ResponseEntity<>("Appointment canceled", HttpStatus.OK);
-    }  //for patient?
+    }
 
+    @PreAuthorize("hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
     @RequestMapping(value = "/appointment/{appointmentId}/reschedule", method = RequestMethod.PUT)
     public ResponseEntity<String> rescheduleAppointment(@PathVariable Long appointmentId, @RequestBody BookingDTO bookingDTO){
         bookingService.rescheduleBooking(appointmentId, bookingDTO);

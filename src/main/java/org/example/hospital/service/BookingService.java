@@ -36,7 +36,7 @@ public class BookingService {
     }
 
     @Transactional
-    public void addBooking(Long doctorId, BookingDTO bookingDTO){
+    public void addBookingforDoctor(Long doctorId, BookingDTO bookingDTO){
         DayOfWeek dayOfWeek = bookingDTO.getDayOfWeek();
         LocalTime startTime = bookingDTO.getStartTime();
         boolean isBooked = bookingRepository.existsBooking(doctorId, dayOfWeek, startTime);
@@ -47,6 +47,26 @@ public class BookingService {
 
         Booking booking = bookingConverter.convertToEntity(bookingDTO, new Booking());
         booking.setDoctor(doctorRepository.findById(doctorId).get());
+        Optional<Patient> patientOptional = patientRepository.findById(bookingDTO.getPatientId());
+        if (patientOptional.isEmpty()) {
+            throw new NoSuchElementException("Patient with ID " + bookingDTO.getPatientId() + " does not exist.");
+        }
+        booking.setPatient(patientOptional.get());
+        bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public void addBooking(Long patientId, BookingDTO bookingDTO){
+        DayOfWeek dayOfWeek = bookingDTO.getDayOfWeek();
+        LocalTime startTime = bookingDTO.getStartTime();
+        boolean isBooked = bookingRepository.existsBooking(patientId, dayOfWeek, startTime);
+
+        if (isBooked){
+            throw new TimeSlotAlreadyBookedException("Time slot is already booked.");
+        }
+
+        Booking booking = bookingConverter.convertToEntity(bookingDTO, new Booking());
+        booking.setDoctor(doctorRepository.findById(patientId).get());
         Optional<Patient> patientOptional = patientRepository.findById(bookingDTO.getPatientId());
         if (patientOptional.isEmpty()) {
             throw new NoSuchElementException("Patient with ID " + bookingDTO.getPatientId() + " does not exist.");

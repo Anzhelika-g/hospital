@@ -78,7 +78,7 @@ public class DoctorServiceTest {
 
         when(doctorConverter.convertToEntity(doctorDTO, new Doctor())).thenReturn(doctor);
         when(departmentRepository.findById(doctorDTO.getDepartmentId())).thenReturn(Optional.of(department));
-        when(userService.getUserByEmail(userDTO.getEmail())).thenReturn(user);
+        when(userService.getUserByUsername(userDTO.getEmail())).thenReturn(user);
 
         doctorService.addDoctor(doctorDTO, userDTO);
 
