@@ -38,7 +38,7 @@ public class Doctor {
     private Department department;
 
     @OneToMany(mappedBy = "doctor")
-    private List<Appointment> appointments = new ArrayList<>();
+    private List<Booking> bookings = new ArrayList<>();
 
     @OneToMany(mappedBy = "doctor")
     private Set<Patient> patients;

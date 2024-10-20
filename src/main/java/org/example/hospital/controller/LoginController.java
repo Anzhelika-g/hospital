@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.example.hospital.config.JWTUtilService;
 import org.example.hospital.dto.UserDTO;
 import org.example.hospital.service.CustomUserDetailsService;
-import org.example.hospital.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
