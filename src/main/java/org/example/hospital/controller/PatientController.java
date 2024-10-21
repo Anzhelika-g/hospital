@@ -94,6 +94,26 @@ public class PatientController {
         }
     }
 
+    @RequestMapping(value = "/{patientId}/labTest/{labTestId}", method = RequestMethod.GET)
+    public ResponseEntity<LabTestDTO> getLabTestDTO(@PathVariable Long patientId, @PathVariable Long labTestId )
+    {
+        try {
+            LabTestDTO labTestDTO = labTestService.getLabTest(labTestId);
+            return new ResponseEntity<>(labTestDTO, HttpStatus.OK);
+        }catch (NoSuchElementException e)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+//    @RequestMapping(value = "/{patientId}/labTest/appointment", method = RequestMethod.POST)
+//    public ResponseEntity<String> addAppointment(@PathVariable Long patientId, @RequestBody BookingDTO bookingDTO)
+//    {
+//
+//        bookingService.addBooking(bookingDTO, patientId);
+//        return new ResponseEntity<>("appointments added for patient",HttpStatus.CREATED);
+//    }
+
     @PreAuthorize("hasAuthority('PATIENT')")
     @RequestMapping(value = "/{patientId}/appoint", method = RequestMethod.POST)
     public ResponseEntity<String> bookAppointment(@PathVariable Long patientId, @RequestBody BookingDTO bookingDTO){
