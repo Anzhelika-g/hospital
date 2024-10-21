@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+<body>
+<h2>Register User</h2>
+<form id="registerForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role">
+        <option value="PATIENT">Patient</option>
+        <option value="DOCTOR">Doctor</option>
+        <option value="LAB_ASSISTANT">Lab Assistant</option>
+    </select><br><br>
+
+    <button type="submit">Register</button>
+</form>
+
+<p id="result"></p>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+        e.preventDefault();  // Prevent the form from submitting the traditional way
+
+        // Create the userRequest object to match your backend structure
+        const userRequest = {
+            userDTO: {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('role').value
+            },
+            // Add any other necessary fields here, such as PatientDTO, DoctorDTO, etc.
+        };
+
+        // Send a POST request to the /register endpoint
+        const response = await fetch('http://localhost:8080/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userRequest)
+        });
+
+        // Get the result and display it
+        const resultText = await response.text();
+        document.getElementById('result').innerText = resultText;
+
+        if (response.ok) {
+            alert("Registration successful!");
+        } else {
+            alert("Registration failed: " + resultText);
+        }
+    });
+</script>
+</body>
+</html>

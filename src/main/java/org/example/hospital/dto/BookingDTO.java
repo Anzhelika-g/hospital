@@ -9,6 +9,7 @@ public class BookingDTO {
     private Long bookingId;
     private Long doctorId;
     private Long patientId;
+    private String symptoms;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;

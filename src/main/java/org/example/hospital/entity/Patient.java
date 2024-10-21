@@ -32,7 +32,7 @@ public class Patient {
     private Doctor doctor;
 
     @OneToMany(mappedBy = "patient")
-    private List<Appointment> appointments = new ArrayList<>();
+    private List<Booking> bookings = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
     private List<Prescription> prescriptions = new ArrayList<>();

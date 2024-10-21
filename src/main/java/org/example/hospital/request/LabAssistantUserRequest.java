@@ -9,5 +9,3 @@ public class LabAssistantUserRequest {
     private LabAssistantDTO labAssistantDTO;
     private UserDTO userDTO;
 }
-
-

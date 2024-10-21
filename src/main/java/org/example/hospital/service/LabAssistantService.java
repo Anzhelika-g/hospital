@@ -32,7 +32,7 @@ public class LabAssistantService {
     public void addLabAssistant(LabAssistantDTO labAssistantDTO, UserDTO userDTO){
         LabAssistant labAssistant = labAssistantConverter.convertToEntity(labAssistantDTO, new LabAssistant());
         userService.addUser(userDTO);
-        User user = userService.getUserByEmail(userDTO.getEmail());
+        User user = userService.getUserByUsername(userDTO.getUsername());
         labAssistant.setUser(user);
         labAssistantRepository.save(labAssistant);
     }

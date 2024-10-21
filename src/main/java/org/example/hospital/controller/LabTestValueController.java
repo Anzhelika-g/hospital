@@ -7,6 +7,7 @@ import org.example.hospital.service.LabTestValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class LabTestValueController {
         }
     }
 
+    @PreAuthorize("hasAuthority('LAB_ASSISTANT')")
     @RequestMapping( value = "/{labTestValueId}", method = RequestMethod.DELETE )
     public ResponseEntity<String> deleteLabTestValue(@PathVariable Long labTestValueId)
     {
@@ -51,6 +53,7 @@ public class LabTestValueController {
         }
     }
 
+    @PreAuthorize("hasAuthority('LAB_ASSISTANT')")
     @RequestMapping(value = "/{labTestValueId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateLabTestValue(@PathVariable Long labTestValueId, @RequestBody LabTestValueDTO labTestValueDTO)
     {
@@ -63,6 +66,7 @@ public class LabTestValueController {
         }
     }
 
+    @PreAuthorize("hasAuthority('LAB_ASSISTANT')")
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<String> addLabTestValue(@PathVariable Long labTestId, @RequestBody LabTestValueDTO labTestValueDTO)
     {
