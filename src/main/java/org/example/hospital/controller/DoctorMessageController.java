@@ -5,6 +5,7 @@ import org.example.hospital.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +21,18 @@ public class DoctorMessageController {
         this.messageService = messageService;
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public ResponseEntity<String> sendMessage(@PathVariable Long doctorId, @RequestBody MessageDTO messageDTO){
-        Long senderId = 13L;
-        messageService.addMessage(doctorId, senderId, messageDTO);
+    public ResponseEntity<String> sendMessage(@PathVariable Long doctorId, @PathVariable Long patientId, @RequestBody MessageDTO messageDTO){
+        messageService.addMessage(doctorId, patientId, messageDTO);
         return new ResponseEntity<>("Message sent.", HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    private ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long doctorId){
-        Long senderId = 8L;
+    private ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long doctorId, @PathVariable Long patientId){
         try {
-            List<MessageDTO> messageDTOS = messageService.getMessagesBetweenUsers(senderId ,doctorId);
+            List<MessageDTO> messageDTOS = messageService.getMessagesBetweenUsers(patientId ,doctorId);
             return new ResponseEntity<>(messageDTOS, HttpStatus.OK);
         }
         catch (NoSuchElementException e){

@@ -10,6 +10,7 @@ import org.example.hospital.service.LabTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +22,13 @@ public class LabTestController {
     private final LabTestService labTestService;
     private LabTestConverter labTestConverter = new LabTestConverter();
     private final LabTestResultService labTestResultService;
+
     @Autowired
     public LabTestController(LabTestService labTestService, LabTestResultService labTestResultService) {
         this.labTestService = labTestService;
         this.labTestResultService = labTestResultService;
     }
+
     @RequestMapping(value = "/{labTestId}", method = RequestMethod.GET)
     public ResponseEntity<LabTestDTO> getLabTest(@PathVariable Long labTestId )
     {
@@ -38,6 +41,7 @@ public class LabTestController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{labTestId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteLabTest(@PathVariable Long labTestId)
     {
@@ -51,6 +55,7 @@ public class LabTestController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{labTestId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateLabTest(@PathVariable Long labTestId, @RequestBody LabTestDTO labTestDTO)
     {
@@ -63,12 +68,14 @@ public class LabTestController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<String> addLabTest(@RequestBody LabTestDTO labTestDTO)
     {
         labTestService.addLabTest(labTestDTO);
         return new ResponseEntity<>("Lab test created", HttpStatus.OK);
     }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List<LabTestDTO>> getAllLabTests()
     {
@@ -80,6 +87,7 @@ public class LabTestController {
         }
     }
 
+    @PreAuthorize("hasAuthority('LAB_ASSISTANT')")
     @RequestMapping(value = "/{labTestId}/labTestResult", method = RequestMethod.POST)
     public ResponseEntity<String> createLabTestResult(@RequestBody LabTestResultDTO labTestResultDTO, @PathVariable Long labTestId)
     {

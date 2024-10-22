@@ -7,6 +7,7 @@ import org.example.hospital.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
     public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable Long departmentId){
         try {
@@ -34,6 +34,7 @@ public class DepartmentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.DELETE)
     public ResponseEntity<String> removeDepartment(@PathVariable Long departmentId){
         try {
@@ -45,6 +46,7 @@ public class DepartmentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.PUT)
     public ResponseEntity<String> updateDepartment(@PathVariable Long departmentId, @RequestBody DepartmentDTO departmentDTO){
         try {
@@ -56,6 +58,7 @@ public class DepartmentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<String> addDepartment(@RequestBody DepartmentDTO departmentDTO){
         departmentService.addDepartment(departmentDTO);
@@ -90,6 +93,7 @@ public class DepartmentController {
         }
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @RequestMapping(value = "/{departmentId}/doctor/{doctorId}/review", method = RequestMethod.POST)
     public ResponseEntity<String> addReviewToDoctorInDepartment(@PathVariable Long departmentId, @PathVariable Long doctorId, @RequestBody ReviewDTO reviewDTO){
         try {

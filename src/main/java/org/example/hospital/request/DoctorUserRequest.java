@@ -9,5 +9,3 @@ public class DoctorUserRequest {
     private DoctorDTO doctorDTO;
     private UserDTO userDTO;
 }
-
-
